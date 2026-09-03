@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Aircon Man</title>
+<meta name="description" content="The marketplace where aircon contractors sell the jobs they've quoted but can't fit in, and licensed installers buy them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap">
+<style>
+  :root {
+    --night: #12081f;
+    --night-2: #1b0d30;
+    --dusk: #2a0f4a;
+    --pink: #ff2d95;
+    --pink-deep: #c4136b;
+    --orange: #ff7a1a;
+    --gold: #ffd166;
+    --teal: #22e5d3;
+    --cash: #7fff6a;
+    --cream: #fff2e8;
+    --cream-dim: rgba(255, 242, 232, 0.66);
+    --cream-faint: rgba(255, 242, 232, 0.14);
+    --line: rgba(255, 45, 149, 0.28);
+    --display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+    --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --hud: "Share Tech Mono", "SF Mono", Menlo, Consolas, monospace;
+    --wrap: 1180px;
+    --skew: -6deg;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--night);
+    color: var(--cream);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, canvas, svg { max-width: 100%; display: block; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+
+  /* film grain over everything */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.09;
+    mix-blend-mode: screen;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .wrap { width: min(var(--wrap), calc(100% - 2.5rem)); margin-inline: auto; }
+
+  /* ---------- display type ---------- */
+  .display {
+    font-family: var(--display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
+    transform: skewX(var(--skew));
+    display: inline-block;
+  }
+  .grad {
+    background: linear-gradient(180deg, var(--gold) 0%, var(--orange) 42%, var(--pink) 78%, var(--pink-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 18px rgba(255, 45, 149, 0.45)) drop-shadow(0 4px 0 rgba(90, 10, 60, 0.9));
+  }
+  .eyebrow {
+    font-family: var(--hud);
+    font-size: 0.8rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.6rem;
+    border: 2px solid transparent;
+    font-family: var(--display);
+    font-size: 1.15rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: skewX(var(--skew));
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    white-space: nowrap;
+  }
+  .btn > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+  .btn-primary {
+    background: linear-gradient(180deg, var(--orange), var(--pink));
+    color: #fff;
+    box-shadow: 0 0 0 0 rgba(255, 45, 149, 0), 0 6px 0 var(--pink-deep);
+  }
+  .btn-primary:hover { transform: skewX(var(--skew)) translateY(-2px); box-shadow: 0 0 28px rgba(255, 45, 149, 0.55), 0 8px 0 var(--pink-deep); }
+  .btn-ghost {
+    background: rgba(18, 8, 31, 0.5);
+    color: var(--teal);
+    border-color: var(--teal);
+    box-shadow: 0 0 14px rgba(34, 229, 211, 0.18) inset;
+  }
+  .btn-ghost:hover { background: rgba(34, 229, 211, 0.12); transform: skewX(var(--skew)) translateY(-2px); }
+
+  /* ---------- nav ---------- */
+  .nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    padding-block: 1.1rem;
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; }
+  .brand-mark {
+    width: 40px; height: 40px;
+    background: linear-gradient(180deg, var(--gold), var(--pink));
+    clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
+    display: grid; place-items: center;
+    font-family: var(--display); color: var(--night); font-size: 1.2rem;
+  }
+  .brand-name { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.1rem; }
+  .nav-links { display: flex; gap: 1.6rem; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .nav-links a { color: var(--cream-dim); transition: color 120ms; }
+  .nav-links a:hover { color: var(--cream); }
+  .nav .btn { font-size: 0.95rem; padding: 0.6rem 1.2rem; }
+  @media (max-width: 760px) { .nav-links { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 620px;
+    padding-top: 7rem;
+    padding-bottom: 0;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg,
+        #0e0a2b 0%,
+        #2a0f4a 22%,
+        #7a1a6a 44%,
+        #d9346f 60%,
+        #ff7a1a 74%,
+        #ffb347 80%,
+        #1a0b3a 80.2%,
+        #12081f 100%);
+    isolation: isolate;
+  }
+  .sun {
+    position: absolute;
+    left: 66%;
+    bottom: 20%;
+    width: clamp(320px, 42vw, 560px);
+    aspect-ratio: 1;
+    transform: translate(-50%, 42%);
+    border-radius: 50%;
+    background: linear-gradient(180deg, #fff2b0 0%, var(--gold) 35%, var(--orange) 65%, var(--pink) 100%);
+    -webkit-mask: repeating-linear-gradient(180deg, #000 0 78%, transparent 78% 100%) 0 0 / 100% 14%;
+    mask: repeating-linear-gradient(180deg, #000 0 78%, transparent 78% 100%) 0 0 / 100% 14%;
+    box-shadow: 0 0 120px 40px rgba(255, 122, 26, 0.45);
+    z-index: 0;
+  }
+  .sun-glow {
+    position: absolute; left: 66%; bottom: 20%;
+    width: clamp(420px, 60vw, 800px); aspect-ratio: 1;
+    transform: translate(-50%, 45%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 209, 102, 0.55) 0%, rgba(255, 122, 26, 0.25) 35%, rgba(255, 45, 149, 0) 68%);
+    z-index: 0;
+  }
+  .sea {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 20%;
+    background:
+      repeating-linear-gradient(180deg, rgba(255, 122, 26, 0.16) 0 2px, transparent 2px 9px),
+      linear-gradient(180deg, #3b1466 0%, #1a0b3a 60%, #12081f 100%);
+    z-index: 0;
+  }
+  .sea::before {
+    content: "";
+    position: absolute; left: 66%; top: 0; bottom: 0;
+    mix-blend-mode: screen;
+    width: clamp(200px, 26vw, 360px);
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(255, 209, 102, 0.55), rgba(255, 45, 149, 0.08) 70%, transparent);
+    -webkit-mask: repeating-linear-gradient(180deg, #000 0 3px, transparent 3px 8px);
+    mask: repeating-linear-gradient(180deg, #000 0 3px, transparent 3px 8px);
+  }
+  @media (max-width: 900px) {
+    .sun, .sun-glow, .sea::before { left: 50%; }
+  }
+  .palms {
+    position: absolute; left: 0; right: 0; bottom: 18%;
+    height: 60%;
+    width: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    display: grid;
+    gap: 1.4rem;
+    padding-bottom: 6.5rem;
+    max-width: 780px;
+  }
+  .logo {
+    font-size: clamp(3.6rem, 11vw, 8.6rem);
+    line-height: 0.86;
+  }
+  .logo small {
+    display: block;
+    font-size: 0.32em;
+    letter-spacing: 0.32em;
+    color: var(--cream);
+    -webkit-text-fill-color: var(--cream);
+    filter: none;
+    margin-bottom: 0.15em;
+    text-shadow: 0 2px 0 rgba(90, 10, 60, 0.8);
+  }
+  .tagline {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3.6vw, 2.5rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.05;
+    color: var(--cream);
+    text-shadow: 0 0 22px rgba(255, 45, 149, 0.5), 0 3px 0 rgba(60, 5, 40, 0.9);
+    max-width: 16ch;
+  }
+  .tagline em { font-style: normal; color: var(--teal); text-shadow: 0 0 22px rgba(34, 229, 211, 0.7), 0 3px 0 rgba(0, 60, 55, 0.9); }
+  .lede { font-size: 1.15rem; max-width: 52ch; color: var(--cream); text-shadow: 0 1px 8px rgba(18, 8, 31, 0.9); font-weight: 500; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.4rem; }
+
+  /* HUD corners */
+  .hud {
+    position: absolute; z-index: 3;
+    font-family: var(--hud);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-shadow: 0 0 8px rgba(0,0,0,0.9), 0 2px 0 #000;
+    display: grid; gap: 0.3rem;
+  }
+  .hud-right { right: 1.25rem; top: 5.4rem; text-align: right; }
+  .hud-cash { color: var(--cash); font-size: 1.5rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .hud-label { color: var(--cream-dim); font-size: 0.72rem; }
+  .hud-stars { color: var(--cream); letter-spacing: 0.1em; font-size: 1rem; }
+  .hud-stars span { color: rgba(255,255,255,0.25); }
+  @media (max-width: 900px) { .hud-right { display: none; } }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    position: relative; z-index: 3;
+    background: var(--pink);
+    color: #fff;
+    border-top: 3px solid var(--gold);
+    border-bottom: 3px solid var(--gold);
+    overflow: hidden;
+    font-family: var(--hud);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-block: 0.55rem;
+    white-space: nowrap;
+  }
+  .ticker-track { display: inline-flex; gap: 0; animation: ticker 48s linear infinite; }
+  .ticker-track span { padding-inline: 1.6rem; border-right: 1px solid rgba(255,255,255,0.35); }
+  .ticker-track b { color: var(--night); font-weight: 400; background: var(--gold); padding: 0.05rem 0.4rem; margin-right: 0.5rem; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- sections ---------- */
+  .section { padding-block: 5.5rem; }
+  .section-head { display: grid; gap: 0.8rem; margin-bottom: 2.6rem; max-width: 720px; }
+  .section-head h2 { font-size: clamp(2.4rem, 6vw, 4.4rem); }
+  .section-head p { color: var(--cream-dim); font-size: 1.1rem; max-width: 56ch; }
+
+  /* ---------- how it works ---------- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    position: relative;
+    background: linear-gradient(180deg, var(--night-2), rgba(27, 13, 48, 0.4));
+    border: 1px solid var(--line);
+    padding: 2rem 1.6rem 1.8rem;
+    display: grid; gap: 0.9rem; align-content: start;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+  }
+  .step-num {
+    font-family: var(--display);
+    font-size: 3.2rem; line-height: 1;
+    transform: skewX(var(--skew));
+    display: inline-block;
+  }
+  .step h3 { font-family: var(--display); font-size: 1.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .step p { color: var(--cream-dim); }
+  .step-tag { font-family: var(--hud); font-size: 0.75rem; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; }
+
+  /* ---------- job board ---------- */
+  .board { background: linear-gradient(180deg, var(--night) 0%, var(--dusk) 50%, var(--night) 100%); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .board-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.2rem; }
+  .board-head .section-head { margin-bottom: 0; }
+  .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--hud); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 0.45rem 0.85rem; border: 1px solid var(--cream-faint); color: var(--cream-dim);
+    background: transparent; transition: all 120ms;
+  }
+  .chip[aria-pressed="true"], .chip:hover { border-color: var(--teal); color: var(--teal); box-shadow: 0 0 12px rgba(34, 229, 211, 0.25); }
+
+  .jobs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
+  @media (max-width: 980px) { .jobs { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .jobs { grid-template-columns: 1fr; } }
+  .job {
+    position: relative;
+    display: grid; gap: 1rem; align-content: start;
+    background: rgba(18, 8, 31, 0.78);
+    border: 1px solid var(--line);
+    padding: 1.3rem 1.3rem 1.2rem;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+  .job::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, var(--gold), var(--pink));
+  }
+  .job:hover { transform: translateY(-4px); border-color: var(--pink); box-shadow: 0 18px 40px -18px rgba(255, 45, 149, 0.6), 0 0 0 1px rgba(255, 45, 149, 0.4); }
+  .job-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
+  .job-type { font-family: var(--hud); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
+  .job h3 { font-family: var(--display); font-size: 1.45rem; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.05; margin-top: 0.3rem; }
+  .job-loc { color: var(--cream-dim); font-size: 0.95rem; font-weight: 500; }
+  .stars { font-family: var(--hud); font-size: 0.95rem; letter-spacing: 0.06em; color: var(--gold); white-space: nowrap; text-shadow: 0 0 10px rgba(255, 209, 102, 0.6); }
+  .stars span { color: rgba(255, 242, 232, 0.18); text-shadow: none; }
+  .job-spec { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .job-spec li { font-family: var(--hud); font-size: 0.74rem; letter-spacing: 0.08em; padding: 0.25rem 0.55rem; background: rgba(255, 242, 232, 0.06); border: 1px solid var(--cream-faint); color: var(--cream-dim); }
+  .job-money { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; border-top: 1px dashed var(--cream-faint); padding-top: 0.9rem; }
+  .money-label { font-family: var(--hud); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-dim); }
+  .money { font-family: var(--hud); font-size: 1.35rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .money.cash { color: var(--cash); text-shadow: 0 0 12px rgba(127, 255, 106, 0.45); }
+  .job-foot { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; }
+  .job-when { font-family: var(--hud); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); }
+  .job .btn { font-size: 0.95rem; padding: 0.55rem 1rem; }
+  .job.sold { opacity: 0.55; }
+  .job.sold::after {
+    content: "SOLD";
+    position: absolute; right: 1rem; top: 1.1rem;
+    font-family: var(--display); font-size: 2.2rem; color: var(--pink);
+    border: 3px solid var(--pink); padding: 0 0.5rem; line-height: 1;
+    transform: rotate(-12deg);
+    opacity: 0.85;
+  }
+  .board-foot { margin-top: 2.2rem; display: flex; justify-content: center; }
+
+  /* ---------- trust strip ---------- */
+  .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+  @media (max-width: 860px) { .trust { grid-template-columns: repeat(2, 1fr); } }
+  .trust li { display: grid; gap: 0.5rem; padding: 1.4rem; border: 1px solid var(--cream-faint); background: rgba(255, 242, 232, 0.03); }
+  .trust .big { font-family: var(--display); font-size: 2.4rem; line-height: 1; color: var(--teal); text-shadow: 0 0 16px rgba(34, 229, 211, 0.5); transform: skewX(var(--skew)); display: inline-block; }
+  .trust .lbl { color: var(--cream-dim); font-size: 0.95rem; }
+
+  /* ---------- mission passed CTA ---------- */
+  .passed {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(ellipse at 50% 120%, rgba(255, 122, 26, 0.35), transparent 60%),
+      linear-gradient(180deg, var(--night) 0%, var(--dusk) 100%);
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .passed .wrap { display: grid; justify-items: center; gap: 1.2rem; }
+  .passed h2 { font-size: clamp(3rem, 9vw, 6.6rem); }
+  .passed-sub { font-family: var(--hud); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-size: 0.95rem; }
+  .passed-stats { display: flex; gap: 2.4rem; flex-wrap: wrap; justify-content: center; font-family: var(--hud); font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream-dim); }
+  .passed-stats b { color: var(--cash); font-weight: 400; }
+  .passed p.lede { text-align: center; margin-inline: auto; }
+  .passed .hero-cta { justify-content: center; }
+
+  /* ---------- footer ---------- */
+  .footer { padding-block: 2.4rem; border-top: 1px solid var(--cream-faint); color: var(--cream-dim); font-size: 0.9rem; }
+  .footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .footer-links { display: flex; gap: 1.4rem; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: 600; }
+  .footer-links a:hover { color: var(--cream); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ticker-track { animation: none; }
+    .job, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="The Aircon Man home">
+      <span class="brand-mark">A</span>
+      <span class="brand-name">The Aircon Man</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#jobs">Job board</a>
+      <a href="#trust">Trust</a>
+    </nav>
+    <a class="btn btn-primary" href="#sell"><span>Sell a job</span></a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="sun-glow" aria-hidden="true"></div>
+  <div class="sun" aria-hidden="true"></div>
+  <canvas class="palms" id="palms" aria-hidden="true"></canvas>
+  <div class="sea" aria-hidden="true"></div>
+
+  <div class="hud hud-right" aria-label="Marketplace totals">
+    <span class="hud-label">Traded this month</span>
+    <span class="hud-cash" data-count="1284900" data-prefix="$">$1,284,900</span>
+    <span class="hud-label">Jobs live right now</span>
+    <span class="hud-stars">214 <span>·</span> ★★★★<span>★</span></span>
+  </div>
+
+  <div class="wrap hero-inner">
+    <h1 class="display grad logo"><small>The</small>Aircon Man</h1>
+    <p class="tagline">Quoted it.<br>Can't do it.<br><em>Sell it.</em></p>
+    <p class="lede">The marketplace where aircon contractors offload the installs they've already quoted but can't fit in, and licensed installers with a gap in the week pick them up.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#sell"><span>List a job you can't do</span></a>
+      <a class="btn btn-ghost" href="#jobs"><span>Browse jobs near me</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-label="Recent sales">
+  <div class="ticker-track" id="ticker">
+    <span><b>Sold</b> Ducted 14kW · Robina · $1,180 finder's fee</span>
+    <span><b>Sold</b> Split 7.1kW · Surfers Paradise · $245</span>
+    <span><b>New</b> Multi-head ×3 · Broadbeach · $690</span>
+    <span><b>Sold</b> Cassette ×4 · Southport · $940</span>
+    <span><b>New</b> Regas R32 · Burleigh Heads · $60</span>
+    <span><b>Sold</b> Condenser swap 5kW · Mermaid Waters · $195</span>
+    <span><b>New</b> Ducted 18kW · Helensvale · $1,540</span>
+    <span><b>Sold</b> Split 2.5kW · Coolangatta · $110</span>
+  </div>
+</div>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2 class="display grad">Three missions. One payday.</h2>
+      <p>You've done the site visit, written the quote and won the job. Then the calendar filled up. Instead of ringing the customer to bail, sell the job to someone who can turn up.</p>
+    </div>
+    <div class="steps">
+      <article class="step">
+        <span class="step-num grad">1</span>
+        <span class="step-tag">Seller</span>
+        <h3>List the job</h3>
+        <p>Upload the quote, site photos and the install date the customer expects. Set your finder's fee. Most sellers ask 10% of the quoted value.</p>
+      </article>
+      <article class="step">
+        <span class="step-num grad">2</span>
+        <span class="step-tag">Buyer</span>
+        <h3>A licensed installer buys it</h3>
+        <p>Only ARCtick licence holders with a verified ABN can see customer details. They pay the fee, which we hold in escrow until the handover is confirmed.</p>
+      </article>
+      <article class="step">
+        <span class="step-num grad">3</span>
+        <span class="step-tag">Both</span>
+        <h3>Hand over and get paid</h3>
+        <p>You introduce the new installer to the customer with our handover template. Once the customer confirms, the fee lands in your account within 24 hours.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section board" id="jobs">
+  <div class="wrap">
+    <div class="board-head">
+      <div class="section-head">
+        <span class="eyebrow">Job board · Gold Coast</span>
+        <h2 class="display grad">Jobs on the market</h2>
+        <p>Every listing is a real quote a contractor has already won. Stars show how soon the customer needs it done.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter by job type">
+        <button class="chip" aria-pressed="true" data-filter="all">All</button>
+        <button class="chip" aria-pressed="false" data-filter="split">Split</button>
+        <button class="chip" aria-pressed="false" data-filter="ducted">Ducted</button>
+        <button class="chip" aria-pressed="false" data-filter="commercial">Commercial</button>
+        <button class="chip" aria-pressed="false" data-filter="service">Service</button>
+      </div>
+    </div>
+
+    <div class="jobs" id="jobs-grid">
+      <article class="job" data-type="ducted">
+        <div class="job-top">
+          <div>
+            <span class="job-type">Ducted install</span>
+            <h3>14kW ducted, 6 zones</h3>
+            <span class="job-loc">Robina QLD 4226 · New build</span>
+          </div>
+          <span class="stars" aria-label="Urgency 5 of 5">★★★★★</span>
+        </div>
+        <ul class="job-spec">
+          <li>Daikin FDYAN140</li><li>6 zones</li><li>Ceiling access OK</li><li>Power at site</li>
+        </ul>
+        <div class="job-money">
+          <div><span class="money-label">Quoted value</span><div class="money">$11,800</div></div>
+          <div><span class="money-label">Finder's fee</span><div class="money cash">$1,180</div></div>
+        </div>
+        <div class="job-foot">
+          <span class="job-when">Install by 12 Sep</span>
+          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
+        </div>
+      </article>
+
+      <article class="job" data-type="split">
+        <div class="job-top">
+          <div>
+            <span class="job-type">Split system install</span>
+            <h3>7.1kW hi-wall, back-to-back</h3>
+            <span class="job-loc">Surfers Paradise QLD 4217 · Apartment</span>
+          </div>
+          <span class="stars" aria-label="Urgency 3 of 5">★★★<span>★★</span></span>
+        </div>
+        <ul class="job-spec">
+          <li>Mitsubishi MSZ-AP71</li><li>Back-to-back</li><li>Body corp approved</li><li>Unit supplied</li>
+        </ul>
+        <div class="job-money">
+          <div><span class="money-label">Quoted value</span><div class="money">$2,450</div></div>
+          <div><span class="money-label">Finder's fee</span><div class="money cash">$245</div></div>
+        </div>
+        <div class="job-foot">
+          <span class="job-when">Install by 26 Sep</span>
+          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
+        </div>
+      </article>
+
+      <article class="job" data-type="split">
+        <div class="job-top">
+          <div>
+            <span class="job-type">Multi-head install</span>
+            <h3>3-head multi, 1 outdoor</h3>
+            <span class="job-loc">Broadbeach QLD 4218 · Unit, level 9</span>
+          </div>
+          <span class="stars" aria-label="Urgency 4 of 5">★★★★<span>★</span></span>
+        </div>
+        <ul class="job-spec">
+          <li>Fujitsu AOTG24 multi</li><li>3 × 2.5kW heads</li><li>Balcony condenser</li><li>Crane not needed</li>
+        </ul>
+        <div class="job-money">
+          <div><span class="money-label">Quoted value</span><div class="money">$6,900</div></div>
+          <div><span class="money-label">Finder's fee</span><div class="money cash">$690</div></div>
+        </div>
+        <div class="job-foot">
+          <span class="job-when">Install by 19 Sep</span>
+          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
+        </div>
+      </article>
+
+      <article class="job" data-type="commercial">
+        <div class="job-top">
+          <div>
+            <span class="job-type">Commercial fit-out</span>
+            <h3>4 × cassette units, café</h3>
+            <span class="job-loc">Southport QLD 4215 · Shop fit-out</span>
+          </div>
+          <span class="stars" aria-label="Urgency 5 of 5">★★★★★</span>
+        </div>
+        <ul class="job-spec">
+          <li>Panasonic 4-way cassettes</li><li>3-phase</li><li>After-hours access</li><li>Ceiling grid in</li>
+        </ul>
+        <div class="job-money">
+          <div><span class="money-label">Quoted value</span><div class="money">$9,400</div></div>
+          <div><span class="money-label">Finder's fee</span><div class="money cash">$940</div></div>
+        </div>
+        <div class="job-foot">
+          <span class="job-when">Install by 10 Sep</span>
+          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
+        </div>
+      </article>
+
+      <article class="job" data-type="service">
+        <div class="job-top">
+          <div>
+            <span class="job-type">Service call</span>
+            <h3>Regas R32 &amp; leak test</h3>
+            <span class="job-loc">Burleigh Heads QLD 4220 · House</span>
+          </div>
+          <span class="stars" aria-label="Urgency 2 of 5">★★<span>★★★</span></span>
+        </div>
+        <ul class="job-spec">
+          <li>5kW split</li><li>R32</li><li>Suspected flare leak</li><li>Ground-level condenser</li>
+        </ul>
+        <div class="job-money">
+          <div><span class="money-label">Quoted value</span><div class="money">$420</div></div>
+          <div><span class="money-label">Finder's fee</span><div class="money cash">$60</div></div>
+        </div>
+        <div class="job-foot">
+          <span class="job-when">Any time in Sep</span>
+          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
+        </div>
+      </article>
+
+      <article class="job sold" data-type="split">
+        <div class="job-top">
+          <div>
+            <span class="job-type">Replacement</span>
+            <h3>Condenser swap, 5kW</h3>
+            <span class="job-loc">Mermaid Waters QLD 4218 · House</span>
+          </div>
+          <span class="stars" aria-label="Urgency 3 of 5">★★★<span>★★</span></span>
+        </div>
+        <ul class="job-spec">
+          <li>Like-for-like</li><li>Existing pipework</li><li>Unit on site</li>
+        </ul>
+        <div class="job-money">
+          <div><span class="money-label">Quoted value</span><div class="money">$1,950</div></div>
+          <div><span class="money-label">Finder's fee</span><div class="money cash">$195</div></div>
+        </div>
+        <div class="job-foot">
+          <span class="job-when">Sold 2 Sep</span>
+          <a class="btn btn-ghost" href="#jobs" aria-disabled="true"><span>Gone</span></a>
+        </div>
+      </article>
+    </div>
+
+    <div class="board-foot">
+      <a class="btn btn-ghost" href="#jobs"><span>See all 214 live jobs</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="trust">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why tradies trust it</span>
+      <h2 class="display grad">No cowboys. No no-shows.</h2>
+      <p>The customer already trusts the person who quoted them. We make sure whoever turns up deserves that trust too.</p>
+    </div>
+    <ul class="trust">
+      <li><span class="big">ARCtick</span><span class="lbl">Every buyer's refrigerant handling licence is checked against the ARC register before they can see a customer's address.</span></li>
+      <li><span class="big">Escrow</span><span class="lbl">Finder's fees sit in escrow until the customer confirms the handover. Nobody pays for a job that doesn't exist.</span></li>
+      <li><span class="big">4.9 ★</span><span class="lbl">Buyers and sellers rate each other after every job. Drop below 4 stars and you lose access to 5-star listings.</span></li>
+      <li><span class="big">24 hrs</span><span class="lbl">Fees are paid out within 24 hours of a confirmed handover. No 30-day invoice terms, no chasing.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section passed" id="sell">
+  <div class="wrap">
+    <span class="passed-sub">Mission passed</span>
+    <h2 class="display grad">Job sold</h2>
+    <div class="passed-stats">
+      <span>Fee earned <b>+$1,180</b></span>
+      <span>Customer kept <b>happy</b></span>
+      <span>Reputation <b>+10</b></span>
+    </div>
+    <p class="lede">Stop letting quoted jobs die in your inbox. List your first one in under five minutes, and it's free to list until it sells.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#top"><span>Create a seller account</span></a>
+      <a class="btn btn-ghost" href="#top"><span>Sign up as an installer</span></a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>© 2026 The Aircon Man · Gold Coast, Queensland</span>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="#how">How it works</a>
+      <a href="#jobs">Job board</a>
+      <a href="#trust">Trust &amp; safety</a>
+      <a href="#top">Terms</a>
+      <a href="#top">Privacy</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Duplicate ticker content so the loop is seamless.
+  var track = document.getElementById('ticker');
+  if (track) { track.innerHTML += track.innerHTML; }
+
+  // Job board filters.
+  var chips = document.querySelectorAll('.chip');
+  var jobs = document.querySelectorAll('#jobs-grid .job');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var f = chip.getAttribute('data-filter');
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+      jobs.forEach(function (job) {
+        job.style.display = (f === 'all' || job.getAttribute('data-type') === f) ? '' : 'none';
+      });
+    });
+  });
+
+  // Palm silhouettes drawn on canvas (Vice City skyline treatment).
+  var canvas = document.getElementById('palms');
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+
+  function palm(x, baseY, height, lean, scale) {
+    ctx.save();
+    ctx.translate(x, baseY);
+    ctx.scale(scale, scale);
+    ctx.strokeStyle = '#0b0518';
+    ctx.fillStyle = '#0b0518';
+    ctx.lineCap = 'round';
+
+    // trunk: curved, tapered
+    ctx.lineWidth = 14;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.quadraticCurveTo(lean * 0.4, -height * 0.55, lean, -height);
+    ctx.stroke();
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(lean * 0.5, -height * 0.6);
+    ctx.quadraticCurveTo(lean * 0.8, -height * 0.85, lean, -height);
+    ctx.stroke();
+
+    // fronds: fan of curved leaves from the crown
+    var cx = lean, cy = -height;
+    var n = 9;
+    for (var i = 0; i < n; i++) {
+      var a = -Math.PI + (i / (n - 1)) * Math.PI * 1.15 - 0.08;
+      var len = 110 + (i % 3) * 22;
+      var ex = cx + Math.cos(a) * len;
+      var ey = cy + Math.sin(a) * len * 0.75 + 40;
+      var mx = cx + Math.cos(a) * len * 0.55;
+      var my = cy + Math.sin(a) * len * 0.35 - 18;
+      ctx.lineWidth = 9;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.quadraticCurveTo(mx, my, ex, ey);
+      ctx.stroke();
+      // leaflets along the frond
+      for (var t = 0.25; t < 1; t += 0.15) {
+        var px = (1 - t) * (1 - t) * cx + 2 * (1 - t) * t * mx + t * t * ex;
+        var py = (1 - t) * (1 - t) * cy + 2 * (1 - t) * t * my + t * t * ey;
+        var l = 22 * (1 - t) + 8;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(px + Math.cos(a + 1.2) * l, py + Math.sin(a + 1.2) * l + 6);
+        ctx.moveTo(px, py);
+        ctx.lineTo(px + Math.cos(a - 1.2) * l, py + Math.sin(a - 1.2) * l + 6);
+        ctx.stroke();
+      }
+    }
+    // coconuts
+    ctx.beginPath(); ctx.arc(cx - 6, cy + 10, 7, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cx + 8, cy + 12, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
+  function draw() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = canvas.clientWidth, h = canvas.clientHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    var base = h + 4;
+    // right-hand cluster
+    palm(w * 0.86, base, h * 0.78, -40, 1.05);
+    palm(w * 0.94, base, h * 0.6, 30, 0.85);
+    palm(w * 0.78, base, h * 0.5, 22, 0.7);
+    // far left, smaller so it doesn't fight the headline
+    if (w > 900) {
+      palm(w * 0.04, base, h * 0.55, 24, 0.75);
+    }
+  }
+  draw();
+  var raf;
+  window.addEventListener('resize', function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); });
+})();
+</script>
+</body>
+</html>
