@@ -1,0 +1,9 @@
+# Hero image
+
+Drop a rendered hero image here as `hero.jpg` (recommended 2400 × 1350, JPEG, under 600 KB) and the page will show it behind the HUD automatically. Without it, the page draws a stylised sunset, skyline, road and palms on canvas instead.
+
+The HUD is designed for a shot like this. Suggested generation prompt:
+
+> Photorealistic wide shot in the style of a modern open-world game screenshot, golden-hour sunset over the Gold Coast, Australia. An aircon installer in a black "The Aircon Man" t-shirt seen from behind, walking towards a white work van with roof racks and rooftop split-system condensers on a glass showroom behind. Q1 tower and city skyline on the horizon, palm trees, wet asphalt reflecting pink and orange sky, cinematic lighting, 16:9, no text, no logos.
+
+Keep the subject centred-right so the left panel and phone do not cover the focal point.

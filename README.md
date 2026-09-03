@@ -2,7 +2,11 @@
 
 Landing page for The Aircon Man, a marketplace where aircon contractors sell the jobs they've quoted but can't fit in, and licensed installers buy them.
 
-The design is GTA VI / Vice City inspired: a striped sunset sun, canvas-drawn palm silhouettes, a skewed gradient display logo, HUD-style counters, a sold-jobs ticker, "mission" style job cards with wanted-star urgency, and a "Mission Passed" call to action.
+The design is GTA VI / Vice City inspired. The hero is composed like an open-world game screenshot: a full-bleed scene with a live HUD layered over it (installer level bar, notification stack, map pin callout, key prompts, minimap, locked regions and an in-game phone), plus a skewed gradient display logo, a sold-jobs ticker, "mission" style job cards with wanted-star urgency, and a "Mission Passed" call to action.
+
+## Hero image
+
+The hero looks for `assets/hero.jpg` and shows it behind the HUD when present. Without it, the page draws a stylised sunset, skyline, road and palms on canvas. See `assets/README.md` for the recommended size and a generation prompt.
 
 ## Run it
 
