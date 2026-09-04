@@ -1,6 +1,6 @@
-# The Aircon Man
+# #airconlife
 
-Landing page for The Aircon Man, a marketplace where aircon contractors sell the jobs they've quoted but can't fit in, and licensed installers buy them.
+Landing page for #airconlife, a marketplace where aircon contractors sell the jobs they've quoted but can't fit in, and licensed installers buy them.
 
 The design is GTA VI / Vice City inspired. The hero is composed like an open-world game screenshot: a full-bleed scene with a live HUD layered over it (installer level bar, notification stack, map pin callout, key prompts, minimap, locked regions and an in-game phone), plus a skewed gradient display logo, a sold-jobs ticker, "mission" style job cards with wanted-star urgency, and a "Mission Passed" call to action.
 
