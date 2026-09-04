@@ -289,7 +289,7 @@
   .key { min-width: 30px; height: 26px; padding-inline: 0.4rem; display: grid; place-items: center; background: rgba(255, 242, 232, 0.92); color: var(--night); font-family: var(--hud); font-size: 0.7rem; border-radius: 3px; box-shadow: 0 2px 0 rgba(0,0,0,0.6); }
 
   /* bottom-left: minimap */
-  .minimap { left: max(1.25rem, calc((100% - var(--wrap)) / 2)); bottom: 1.4rem; width: 190px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255, 242, 232, 0.25); box-shadow: 0 0 0 4px rgba(12, 8, 24, 0.7), 0 20px 40px -18px #000; }
+  .minimap { display: block; left: max(1.25rem, calc((100% - var(--wrap)) / 2)); bottom: 1.4rem; width: 190px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255, 242, 232, 0.25); box-shadow: 0 0 0 4px rgba(12, 8, 24, 0.7), 0 20px 40px -18px #000; }
   .minimap svg { width: 100%; height: 100%; }
   .minimap-tag { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); font-family: var(--hud); font-size: 0.6rem; letter-spacing: 0.16em; color: var(--cream); text-transform: uppercase; background: rgba(12, 8, 24, 0.8); padding: 0.15rem 0.5rem; white-space: nowrap; }
   .locked { left: calc(max(1.25rem, calc((100% - var(--wrap)) / 2)) + 205px); bottom: 1.6rem; display: grid; gap: 0.4rem; }
@@ -393,60 +393,94 @@
   .step p { color: var(--cream-dim); }
   .step-tag { font-family: var(--hud); font-size: 0.75rem; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; }
 
-  /* ---------- job board ---------- */
+  /* ---------- job map (pause-menu style) ---------- */
   .board { background: linear-gradient(180deg, var(--night) 0%, var(--dusk) 50%, var(--night) 100%); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .board-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.2rem; }
+  .pause-tabs { display: flex; gap: 0.2rem; border-bottom: 1px solid var(--cream-faint); margin-bottom: 2rem; overflow-x: auto; }
+  .pause-tabs a { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.12em; font-size: 1.05rem; padding: 0.7rem 1.2rem; color: var(--cream-dim); border-bottom: 3px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+  .pause-tabs a[aria-current="true"] { color: var(--cream); border-color: var(--gold); text-shadow: 0 0 12px rgba(255, 209, 102, 0.5); }
+  .pause-tabs a:hover { color: var(--cream); }
+  .board-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
   .board-head .section-head { margin-bottom: 0; }
   .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
   .chip {
+    display: inline-flex; align-items: center; gap: 0.45rem;
     font-family: var(--hud); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
     padding: 0.45rem 0.85rem; border: 1px solid var(--cream-faint); color: var(--cream-dim);
     background: transparent; transition: all 120ms;
   }
-  .chip[aria-pressed="true"], .chip:hover { border-color: var(--teal); color: var(--teal); box-shadow: 0 0 12px rgba(34, 229, 211, 0.25); }
+  .chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--c, var(--cream)); box-shadow: 0 0 8px var(--c, var(--cream)); }
+  .chip[aria-pressed="true"] { border-color: var(--teal); color: var(--cream); box-shadow: 0 0 12px rgba(34, 229, 211, 0.25); }
+  .chip[aria-pressed="false"] i { opacity: 0.3; box-shadow: none; }
+  .chip:hover { border-color: var(--teal); }
 
-  .jobs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; }
-  @media (max-width: 980px) { .jobs { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 620px) { .jobs { grid-template-columns: 1fr; } }
-  .job {
-    position: relative;
-    display: grid; gap: 1rem; align-content: start;
-    background: rgba(18, 8, 31, 0.78);
-    border: 1px solid var(--line);
-    padding: 1.3rem 1.3rem 1.2rem;
-    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-  }
-  .job::before {
-    content: "";
-    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: linear-gradient(180deg, var(--gold), var(--pink));
-  }
-  .job:hover { transform: translateY(-4px); border-color: var(--pink); box-shadow: 0 18px 40px -18px rgba(255, 45, 149, 0.6), 0 0 0 1px rgba(255, 45, 149, 0.4); }
+  .map-wrap { display: grid; grid-template-columns: 1fr 340px; border: 1px solid var(--line); background: #100b1f; box-shadow: 0 30px 60px -30px #000, 0 0 0 1px rgba(255, 45, 149, 0.08); }
+  .map-stage { position: relative; height: 680px; overflow: hidden; cursor: grab; background: #1c1530; touch-action: none; user-select: none; }
+  .map-stage.dragging { cursor: grabbing; }
+  .map-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .map-stage:focus-visible { outline: 3px solid var(--teal); outline-offset: -3px; }
+  .map-ui { position: absolute; z-index: 2; font-family: var(--hud); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream); pointer-events: none; }
+  .map-hint { left: 1rem; top: 1rem; display: flex; gap: 0.6rem; align-items: center; color: var(--cream-dim); }
+  .map-hint .key { pointer-events: none; }
+  .map-title { left: 1rem; top: 3rem; font-family: var(--display); font-size: 1.6rem; letter-spacing: 0.06em; color: var(--cream); text-shadow: 0 2px 0 #000, 0 0 18px rgba(255, 45, 149, 0.4); }
+  .map-title small { display: block; font-family: var(--hud); font-size: 0.62rem; letter-spacing: 0.2em; color: var(--gold); }
+  .map-controls { right: 1rem; top: 1rem; display: grid; gap: 0.3rem; pointer-events: auto; }
+  .map-controls button { width: 36px; height: 36px; display: grid; place-items: center; background: rgba(12, 8, 24, 0.85); border: 1px solid rgba(255, 242, 232, 0.2); color: var(--cream); font-family: var(--hud); font-size: 1rem; }
+  .map-controls button:hover { border-color: var(--teal); color: var(--teal); }
+  .legend { left: 1rem; bottom: 1rem; display: grid; gap: 0.3rem; padding: 0.7rem 0.8rem; background: rgba(12, 8, 24, 0.85); border: 1px solid rgba(255, 242, 232, 0.14); }
+  .legend li { display: flex; align-items: center; gap: 0.5rem; }
+  .legend i { width: 12px; height: 12px; border-radius: 50%; background: var(--c); border: 2px solid #0b0713; box-shadow: 0 0 8px var(--c); }
+  .legend i.you { border-radius: 0; clip-path: polygon(50% 0, 100% 100%, 50% 75%, 0 100%); background: var(--cream); box-shadow: none; }
+  .legend i.wp { background: var(--pink); }
+  .scalebar { right: 1rem; bottom: 1rem; display: grid; gap: 0.2rem; justify-items: end; color: var(--cream-dim); }
+  .scalebar b { display: block; height: 4px; border: 1px solid var(--cream); border-top: 0; font-weight: 400; }
+  .map-tip { position: absolute; z-index: 3; pointer-events: none; transform: translate(14px, -50%); padding: 0.45rem 0.7rem; background: rgba(12, 8, 24, 0.92); border: 1px solid var(--line); font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream); white-space: nowrap; }
+  .map-tip[hidden] { display: none; }
+  .map-tip b { color: var(--cash); font-weight: 400; }
+
   .job-top { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
   .job-type { font-family: var(--hud); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal); }
-  .job h3 { font-family: var(--display); font-size: 1.45rem; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.05; margin-top: 0.3rem; }
-  .job-loc { color: var(--cream-dim); font-size: 0.95rem; font-weight: 500; }
+  .job-loc { display: block; color: var(--cream-dim); font-size: 0.95rem; font-weight: 500; margin-top: 0.2rem; }
   .stars { font-family: var(--hud); font-size: 0.95rem; letter-spacing: 0.06em; color: var(--gold); white-space: nowrap; text-shadow: 0 0 10px rgba(255, 209, 102, 0.6); }
   .stars span { color: rgba(255, 242, 232, 0.18); text-shadow: none; }
   .job-spec { display: flex; flex-wrap: wrap; gap: 0.4rem; }
   .job-spec li { font-family: var(--hud); font-size: 0.74rem; letter-spacing: 0.08em; padding: 0.25rem 0.55rem; background: rgba(255, 242, 232, 0.06); border: 1px solid var(--cream-faint); color: var(--cream-dim); }
-  .job-money { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; border-top: 1px dashed var(--cream-faint); padding-top: 0.9rem; }
+  .job-money { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
   .money-label { font-family: var(--hud); font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-dim); }
   .money { font-family: var(--hud); font-size: 1.35rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
   .money.cash { color: var(--cash); text-shadow: 0 0 12px rgba(127, 255, 106, 0.45); }
-  .job-foot { display: flex; justify-content: space-between; align-items: center; gap: 0.8rem; }
-  .job-when { font-family: var(--hud); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); }
-  .job .btn { font-size: 0.95rem; padding: 0.55rem 1rem; }
-  .job.sold { opacity: 0.55; }
-  .job.sold::after {
-    content: "SOLD";
-    position: absolute; right: 1rem; top: 1.1rem;
-    font-family: var(--display); font-size: 2.2rem; color: var(--pink);
-    border: 3px solid var(--pink); padding: 0 0.5rem; line-height: 1;
-    transform: rotate(-12deg);
-    opacity: 0.85;
+
+  .rail { display: grid; grid-template-rows: auto auto 1fr; border-left: 1px solid var(--line); background: rgba(12, 8, 24, 0.7); min-height: 0; }
+  .rail-head { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--cream-faint); font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); display: flex; justify-content: space-between; }
+  .brief { padding: 1.1rem; display: grid; gap: 0.8rem; border-bottom: 1px solid var(--cream-faint); border-left: 4px solid var(--c, var(--pink)); }
+  .brief .job-type { color: var(--c, var(--teal)); }
+  .brief h3 { font-family: var(--display); font-size: 1.5rem; margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.05; }
+  .brief .job-loc { color: var(--cream-dim); font-size: 0.9rem; }
+  .brief .job-spec li { font-size: 0.68rem; }
+  .brief .job-money { border-top: 1px dashed var(--cream-faint); padding-top: 0.7rem; }
+  .brief .money { font-size: 1.2rem; }
+  .brief-route { display: flex; justify-content: space-between; font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-dim); }
+  .brief-route b { color: var(--pink); font-weight: 400; }
+  .brief .btn { font-size: 0.95rem; padding: 0.6rem 1rem; justify-content: center; }
+  .brief-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .nearby { overflow: auto; min-height: 0; }
+  .nearby li { display: grid; grid-template-columns: auto 1fr auto; gap: 0.7rem; align-items: center; padding: 0.7rem 1.1rem; border-bottom: 1px solid rgba(255, 242, 232, 0.06); cursor: pointer; transition: background 120ms; }
+  .nearby li:hover, .nearby li[aria-selected="true"] { background: rgba(255, 45, 149, 0.1); }
+  .nearby li[aria-selected="true"] { box-shadow: inset 3px 0 0 var(--pink); }
+  .nearby .blip { width: 22px; height: 22px; border-radius: 50%; background: var(--c); border: 2px solid #0b0713; display: grid; place-items: center; font-family: var(--hud); font-size: 0.6rem; color: #0b0713; box-shadow: 0 0 10px var(--c); }
+  .nearby li.sold .blip { background: #5a5566; box-shadow: none; }
+  .nearby li.sold { opacity: 0.55; }
+  .nearby b { display: block; font-weight: 600; font-size: 0.92rem; line-height: 1.2; }
+  .nearby small { display: block; font-family: var(--hud); font-size: 0.64rem; letter-spacing: 0.08em; color: var(--cream-dim); margin-top: 0.15rem; }
+  .nearby .fee { font-family: var(--hud); font-size: 0.8rem; color: var(--cash); text-align: right; }
+  .nearby .fee small { color: var(--gold); letter-spacing: 0.05em; }
+  .board-foot { margin-top: 2rem; display: flex; justify-content: center; }
+  @media (max-width: 980px) {
+    .map-wrap { grid-template-columns: 1fr; }
+    .map-stage { height: 460px; }
+    .rail { border-left: 0; border-top: 1px solid var(--line); grid-template-rows: auto auto auto; }
+    .nearby { max-height: 320px; }
+    .map-title { display: none; }
   }
-  .board-foot { margin-top: 2.2rem; display: flex; justify-content: center; }
 
   /* ---------- trust strip ---------- */
   .trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
@@ -495,7 +529,7 @@
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#how">How it works</a>
-      <a href="#jobs">Job board</a>
+      <a href="#jobs">Job map</a>
       <a href="#trust">Trust</a>
     </nav>
     <a class="btn btn-primary" href="#sell"><span>Sell a job</span></a>
@@ -555,10 +589,10 @@
   <ul class="hud-el keys" aria-hidden="true">
     <li class="glass"><span class="key">E</span>Buy job</li>
     <li class="glass"><span class="key">R</span>Message seller</li>
-    <li class="glass"><span class="key">Tab</span>Open phone</li>
+    <li class="glass"><span class="key">M</span>Open map</li>
   </ul>
 
-  <div class="hud-el minimap" aria-hidden="true">
+  <a class="hud-el minimap" href="#jobs" aria-label="Open the job map">
     <svg viewBox="0 0 200 200" role="img">
       <rect width="200" height="200" fill="#1a1230"/>
       <g stroke="#3a2b5c" stroke-width="6" fill="none">
@@ -574,8 +608,8 @@
       <circle cx="60" cy="40" r="6" fill="#ff2d95"/>
       <polygon points="100,90 108,108 100,103 92,108" fill="#fff2e8"/>
     </svg>
-    <span class="minimap-tag">Gold Coast · 3 jobs</span>
-  </div>
+    <span class="minimap-tag">Gold Coast · open map</span>
+  </a>
 
   <ul class="hud-el locked" aria-hidden="true">
     <li class="glass"><span class="key">🔒</span><span><b>Brisbane</b><small>Opens Oct 2026</small></span></li>
@@ -658,153 +692,52 @@
 
 <section class="section board" id="jobs">
   <div class="wrap">
+    <nav class="pause-tabs" aria-label="Menu">
+      <a href="#jobs" aria-current="true">Map</a>
+      <a href="#how">Brief</a>
+      <a href="#trust">Stats</a>
+      <a href="#sell">Online</a>
+    </nav>
     <div class="board-head">
       <div class="section-head">
-        <span class="eyebrow">Job board · Gold Coast</span>
-        <h2 class="display grad">Jobs on the market</h2>
-        <p>Every listing is a real quote a contractor has already won. Stars show how soon the customer needs it done.</p>
+        <span class="eyebrow">Job map · Gold Coast</span>
+        <h2 class="display grad">Pick a blip. Buy the job.</h2>
+        <p>Every blip is a real quote a contractor has already won. Click one to set a waypoint and read the brief. Stars show how soon the customer needs it done.</p>
       </div>
-      <div class="filters" role="group" aria-label="Filter by job type">
-        <button class="chip" aria-pressed="true" data-filter="all">All</button>
-        <button class="chip" aria-pressed="false" data-filter="split">Split</button>
-        <button class="chip" aria-pressed="false" data-filter="ducted">Ducted</button>
-        <button class="chip" aria-pressed="false" data-filter="commercial">Commercial</button>
-        <button class="chip" aria-pressed="false" data-filter="service">Service</button>
+      <div class="filters" role="group" aria-label="Show job types" id="map-filters">
+        <button class="chip" aria-pressed="true" data-type="split" style="--c:#22e5d3"><i></i>Split</button>
+        <button class="chip" aria-pressed="true" data-type="ducted" style="--c:#ffd166"><i></i>Ducted</button>
+        <button class="chip" aria-pressed="true" data-type="commercial" style="--c:#ff2d95"><i></i>Commercial</button>
+        <button class="chip" aria-pressed="true" data-type="service" style="--c:#ff7a1a"><i></i>Service</button>
       </div>
     </div>
 
-    <div class="jobs" id="jobs-grid">
-      <article class="job" data-type="ducted">
-        <div class="job-top">
-          <div>
-            <span class="job-type">Ducted install</span>
-            <h3>14kW ducted, 6 zones</h3>
-            <span class="job-loc">Robina QLD 4226 · New build</span>
-          </div>
-          <span class="stars" aria-label="Urgency 5 of 5">★★★★★</span>
+    <div class="map-wrap" id="map">
+      <div class="map-stage" id="map-stage" tabindex="0" aria-label="Interactive job map of the Gold Coast. Drag to pan, scroll or use plus and minus to zoom, arrow keys to move." role="application">
+        <canvas id="map-canvas"></canvas>
+        <div class="map-ui map-hint"><span class="key">Drag</span>pan<span class="key">Scroll</span>zoom<span class="key">Click</span>waypoint</div>
+        <div class="map-ui map-title">Gold Coast<small id="map-count">12 jobs on the map</small></div>
+        <div class="map-ui map-controls">
+          <button type="button" id="zoom-in" aria-label="Zoom in">+</button>
+          <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
+          <button type="button" id="zoom-reset" aria-label="Reset view">⌂</button>
         </div>
-        <ul class="job-spec">
-          <li>Daikin FDYAN140</li><li>6 zones</li><li>Ceiling access OK</li><li>Power at site</li>
+        <ul class="map-ui legend" aria-label="Legend">
+          <li><i class="you"></i>You · Broadbeach</li>
+          <li><i style="--c:#22e5d3"></i>Split system</li>
+          <li><i style="--c:#ffd166"></i>Ducted</li>
+          <li><i style="--c:#ff2d95"></i>Commercial</li>
+          <li><i style="--c:#ff7a1a"></i>Service</li>
+          <li><i class="wp"></i>Waypoint</li>
         </ul>
-        <div class="job-money">
-          <div><span class="money-label">Quoted value</span><div class="money">$11,800</div></div>
-          <div><span class="money-label">Finder's fee</span><div class="money cash">$1,180</div></div>
-        </div>
-        <div class="job-foot">
-          <span class="job-when">Install by 12 Sep</span>
-          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
-        </div>
-      </article>
-
-      <article class="job" data-type="split">
-        <div class="job-top">
-          <div>
-            <span class="job-type">Split system install</span>
-            <h3>7.1kW hi-wall, back-to-back</h3>
-            <span class="job-loc">Surfers Paradise QLD 4217 · Apartment</span>
-          </div>
-          <span class="stars" aria-label="Urgency 3 of 5">★★★<span>★★</span></span>
-        </div>
-        <ul class="job-spec">
-          <li>Mitsubishi MSZ-AP71</li><li>Back-to-back</li><li>Body corp approved</li><li>Unit supplied</li>
-        </ul>
-        <div class="job-money">
-          <div><span class="money-label">Quoted value</span><div class="money">$2,450</div></div>
-          <div><span class="money-label">Finder's fee</span><div class="money cash">$245</div></div>
-        </div>
-        <div class="job-foot">
-          <span class="job-when">Install by 26 Sep</span>
-          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
-        </div>
-      </article>
-
-      <article class="job" data-type="split">
-        <div class="job-top">
-          <div>
-            <span class="job-type">Multi-head install</span>
-            <h3>3-head multi, 1 outdoor</h3>
-            <span class="job-loc">Broadbeach QLD 4218 · Unit, level 9</span>
-          </div>
-          <span class="stars" aria-label="Urgency 4 of 5">★★★★<span>★</span></span>
-        </div>
-        <ul class="job-spec">
-          <li>Fujitsu AOTG24 multi</li><li>3 × 2.5kW heads</li><li>Balcony condenser</li><li>Crane not needed</li>
-        </ul>
-        <div class="job-money">
-          <div><span class="money-label">Quoted value</span><div class="money">$6,900</div></div>
-          <div><span class="money-label">Finder's fee</span><div class="money cash">$690</div></div>
-        </div>
-        <div class="job-foot">
-          <span class="job-when">Install by 19 Sep</span>
-          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
-        </div>
-      </article>
-
-      <article class="job" data-type="commercial">
-        <div class="job-top">
-          <div>
-            <span class="job-type">Commercial fit-out</span>
-            <h3>4 × cassette units, café</h3>
-            <span class="job-loc">Southport QLD 4215 · Shop fit-out</span>
-          </div>
-          <span class="stars" aria-label="Urgency 5 of 5">★★★★★</span>
-        </div>
-        <ul class="job-spec">
-          <li>Panasonic 4-way cassettes</li><li>3-phase</li><li>After-hours access</li><li>Ceiling grid in</li>
-        </ul>
-        <div class="job-money">
-          <div><span class="money-label">Quoted value</span><div class="money">$9,400</div></div>
-          <div><span class="money-label">Finder's fee</span><div class="money cash">$940</div></div>
-        </div>
-        <div class="job-foot">
-          <span class="job-when">Install by 10 Sep</span>
-          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
-        </div>
-      </article>
-
-      <article class="job" data-type="service">
-        <div class="job-top">
-          <div>
-            <span class="job-type">Service call</span>
-            <h3>Regas R32 &amp; leak test</h3>
-            <span class="job-loc">Burleigh Heads QLD 4220 · House</span>
-          </div>
-          <span class="stars" aria-label="Urgency 2 of 5">★★<span>★★★</span></span>
-        </div>
-        <ul class="job-spec">
-          <li>5kW split</li><li>R32</li><li>Suspected flare leak</li><li>Ground-level condenser</li>
-        </ul>
-        <div class="job-money">
-          <div><span class="money-label">Quoted value</span><div class="money">$420</div></div>
-          <div><span class="money-label">Finder's fee</span><div class="money cash">$60</div></div>
-        </div>
-        <div class="job-foot">
-          <span class="job-when">Any time in Sep</span>
-          <a class="btn btn-primary" href="#sell"><span>Buy job</span></a>
-        </div>
-      </article>
-
-      <article class="job sold" data-type="split">
-        <div class="job-top">
-          <div>
-            <span class="job-type">Replacement</span>
-            <h3>Condenser swap, 5kW</h3>
-            <span class="job-loc">Mermaid Waters QLD 4218 · House</span>
-          </div>
-          <span class="stars" aria-label="Urgency 3 of 5">★★★<span>★★</span></span>
-        </div>
-        <ul class="job-spec">
-          <li>Like-for-like</li><li>Existing pipework</li><li>Unit on site</li>
-        </ul>
-        <div class="job-money">
-          <div><span class="money-label">Quoted value</span><div class="money">$1,950</div></div>
-          <div><span class="money-label">Finder's fee</span><div class="money cash">$195</div></div>
-        </div>
-        <div class="job-foot">
-          <span class="job-when">Sold 2 Sep</span>
-          <a class="btn btn-ghost" href="#jobs" aria-disabled="true"><span>Gone</span></a>
-        </div>
-      </article>
+        <div class="map-ui scalebar"><span id="scale-label">5 km</span><b id="scale-bar" style="width:80px"></b></div>
+        <div class="map-tip" id="map-tip" hidden></div>
+      </div>
+      <aside class="rail">
+        <div class="rail-head"><span>Job brief</span><span id="brief-id">#GC-1042</span></div>
+        <div class="brief" id="brief"></div>
+        <ul class="nearby" id="nearby" aria-label="Jobs by distance from you"></ul>
+      </aside>
     </div>
 
     <div class="board-foot">
@@ -851,7 +784,7 @@
     <span>© 2026 The Aircon Man · Gold Coast, Queensland<br><small>Hero photo: <a href="https://commons.wikimedia.org/wiki/File:Gold-Coast-Skyline-at-Night.jpg">Gold Coast skyline at night</a> by marty.vdh, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>, colour graded.</small></span>
     <nav class="footer-links" aria-label="Footer">
       <a href="#how">How it works</a>
-      <a href="#jobs">Job board</a>
+      <a href="#jobs">Job map</a>
       <a href="#trust">Trust &amp; safety</a>
       <a href="#top">Terms</a>
       <a href="#top">Privacy</a>
@@ -864,19 +797,6 @@
   // Duplicate ticker content so the loop is seamless.
   var track = document.getElementById('ticker');
   if (track) { track.innerHTML += track.innerHTML; }
-
-  // Job board filters.
-  var chips = document.querySelectorAll('.chip');
-  var jobs = document.querySelectorAll('#jobs-grid .job');
-  chips.forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      var f = chip.getAttribute('data-filter');
-      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
-      jobs.forEach(function (job) {
-        job.style.display = (f === 'all' || job.getAttribute('data-type') === f) ? '' : 'none';
-      });
-    });
-  });
 
   // Scene: skyline, road and palms drawn on canvas (fallback when assets/hero.jpg is absent).
   var hero = document.getElementById('top');
@@ -1001,6 +921,347 @@
   }
   var raf;
   window.addEventListener('resize', function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); });
+})();
+</script>
+<script>
+(function () {
+  // ---------- data ----------
+  var TYPES = {
+    split:      { label: 'Split system',  color: '#22e5d3', glyph: 'S' },
+    ducted:     { label: 'Ducted',        color: '#ffd166', glyph: 'D' },
+    commercial: { label: 'Commercial',    color: '#ff2d95', glyph: 'C' },
+    service:    { label: 'Service',       color: '#ff7a1a', glyph: 'R' }
+  };
+  // world units: 1000 x 1000, roughly 30 km north to south
+  var KM_PER_UNIT = 30 / 1000;
+  var PLAYER = { x: 628, y: 442 };
+  var JOBS = [
+    { id: 'GC-1042', type: 'ducted', name: '14kW ducted, 6 zones', suburb: 'Robina QLD 4226', site: 'New build', x: 440, y: 575, quote: 11800, fee: 1180, stars: 5, by: 'Install by 12 Sep', spec: ['Daikin FDYAN140', '6 zones', 'Ceiling access OK', 'Power at site'] },
+    { id: 'GC-1039', type: 'split', name: '7.1kW hi-wall, back-to-back', suburb: 'Surfers Paradise QLD 4217', site: 'Apartment', x: 612, y: 305, quote: 2450, fee: 245, stars: 3, by: 'Install by 26 Sep', spec: ['Mitsubishi MSZ-AP71', 'Back-to-back', 'Body corp approved', 'Unit supplied'] },
+    { id: 'GC-1041', type: 'split', name: '3-head multi, 1 outdoor', suburb: 'Broadbeach QLD 4218', site: 'Unit, level 9', x: 648, y: 405, quote: 6900, fee: 690, stars: 4, by: 'Install by 19 Sep', spec: ['Fujitsu AOTG24 multi', '3 × 2.5kW heads', 'Balcony condenser', 'Crane not needed'] },
+    { id: 'GC-1044', type: 'commercial', name: '4 × cassette units, café', suburb: 'Southport QLD 4215', site: 'Shop fit-out', x: 545, y: 170, quote: 9400, fee: 940, stars: 5, by: 'Install by 10 Sep', spec: ['Panasonic 4-way cassettes', '3-phase', 'After-hours access', 'Ceiling grid in'] },
+    { id: 'GC-1037', type: 'service', name: 'Regas R32 & leak test', suburb: 'Burleigh Heads QLD 4220', site: 'House', x: 660, y: 615, quote: 420, fee: 60, stars: 2, by: 'Any time in Sep', spec: ['5kW split', 'R32', 'Suspected flare leak', 'Ground-level condenser'] },
+    { id: 'GC-1031', type: 'split', name: 'Condenser swap, 5kW', suburb: 'Mermaid Waters QLD 4218', site: 'House', x: 605, y: 498, quote: 1950, fee: 195, stars: 3, by: 'Sold 2 Sep', sold: true, spec: ['Like-for-like', 'Existing pipework', 'Unit on site'] },
+    { id: 'GC-1046', type: 'ducted', name: '18kW ducted, 8 zones', suburb: 'Helensvale QLD 4212', site: 'Two-storey house', x: 335, y: 75, quote: 15400, fee: 1540, stars: 4, by: 'Install by 24 Sep', spec: ['Actron ESP Platinum', '8 zones', 'Roof access tight', 'Existing ducting out'] },
+    { id: 'GC-1045', type: 'split', name: '2.5kW bedroom split', suburb: 'Coolangatta QLD 4225', site: 'Unit', x: 748, y: 925, quote: 1100, fee: 110, stars: 1, by: 'Install by 3 Oct', spec: ['Daikin Cora 2.5kW', 'Back-to-back', 'Unit supplied'] },
+    { id: 'GC-1043', type: 'commercial', name: 'Gym, 2 × 14kW cassettes', suburb: 'Varsity Lakes QLD 4227', site: 'Commercial', x: 485, y: 655, quote: 12600, fee: 1260, stars: 4, by: 'Install by 20 Sep', spec: ['Daikin FCAG140', '3-phase', 'Weekend access', 'Lift on site'] },
+    { id: 'GC-1040', type: 'ducted', name: '10kW ducted, 4 zones', suburb: 'Nerang QLD 4211', site: 'Single-storey house', x: 262, y: 430, quote: 8900, fee: 890, stars: 3, by: 'Install by 30 Sep', spec: ['Fujitsu ARTG30', '4 zones', 'Easy roof access'] },
+    { id: 'GC-1047', type: 'service', name: 'Annual service, 3 splits', suburb: 'Palm Beach QLD 4221', site: 'Holiday rental', x: 692, y: 725, quote: 360, fee: 50, stars: 2, by: 'Before 15 Sep', spec: ['3 × hi-wall', 'Clean & test', 'Key safe on site'] },
+    { id: 'GC-1048', type: 'split', name: '5kW living room split', suburb: 'Labrador QLD 4215', site: 'House', x: 560, y: 95, quote: 1850, fee: 185, stars: 5, by: 'Install by 9 Sep', spec: ['Mitsubishi MSZ-AP50', 'Brick wall', 'Unit supplied'] }
+  ];
+
+  // ---------- geography (stylised) ----------
+  var COAST = [[600,0],[628,120],[642,225],[660,330],[682,420],[700,520],[716,600],[736,700],[760,800],[790,900],[802,1000]];
+  var BROADWATER = [[562,40],[622,40],[638,232],[600,246],[568,190]];
+  var RIVER = [[120,520],[220,478],[300,455],[360,438],[420,410],[468,368],[520,334],[578,300],[606,250]];
+  var CANALS = [[556,440,34,22],[598,452,44,18],[560,476,26,30],[602,482,36,26],[566,518,40,18],[618,520,30,22],[590,548,48,16]];
+  var LAKES = [[430,598,30,20],[472,668,24,16],[540,580,18,14]];
+  var M1 = [[330,0],[340,150],[330,300],[360,450],[400,560],[460,660],[520,760],[600,860],[680,960],[720,1000]];
+  var HWY = [[556,0],[572,120],[592,230],[612,330],[636,420],[656,520],[672,600],[692,700],[716,800],[746,900],[760,1000]];
+  var ARTERIALS = [
+    [[340,100],[572,140]], [[330,150],[590,200]], [[340,400],[640,432]], [[400,560],[660,522]],
+    [[460,660],[672,600]], [[500,720],[690,690]], [[600,860],[750,800]], [[560,300],[600,382]],
+    [[330,300],[560,300]], [[520,760],[716,800]], [[400,560],[430,650]], [[340,150],[262,430]]
+  ];
+  var LABELS = [
+    ['Helensvale',330,48],['Labrador',505,100],['Southport',452,166],['Bundall',548,352],['Surfers Paradise',556,278],
+    ['Nerang',232,415],['Broadbeach',576,382],['Mermaid Waters',548,468],['Robina',425,552],['Varsity Lakes',470,640],
+    ['Burleigh Heads',636,596],['Palm Beach',668,712],['Currumbin',700,822],['Coolangatta',724,912],['Pacific Ocean',840,520],['Broadwater',590,208]
+  ];
+
+  // ---------- state ----------
+  var stage = document.getElementById('map-stage');
+  var canvas = document.getElementById('map-canvas');
+  if (!stage || !canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+  var tip = document.getElementById('map-tip');
+  var view = { scale: 1, tx: 0, ty: 0 };
+  var enabled = { split: true, ducted: true, commercial: true, service: true };
+  var selected = JOBS[0];
+  var hover = null;
+  var W = 0, H = 0, dpr = 1;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var HUD_FONT = '"Share Tech Mono", monospace';
+
+  function worldToScreen(x, y) { return [x * view.scale + view.tx, y * view.scale + view.ty]; }
+  function screenToWorld(sx, sy) { return [(sx - view.tx) / view.scale, (sy - view.ty) / view.scale]; }
+  function resetView() {
+    W = stage.clientWidth; H = stage.clientHeight;
+    view.scale = Math.max(W / 1000, H / 1000) * 0.95;
+    view.tx = W / 2 - 570 * view.scale;
+    view.ty = H / 2 - 480 * view.scale;
+    clamp();
+  }
+  function clamp() {
+    var minScale = Math.min(W / 1000, H / 1000) * 0.9;
+    view.scale = Math.min(Math.max(view.scale, minScale), Math.max(W / 1000, H / 1000) * 6);
+    var mw = 1000 * view.scale, mh = 1000 * view.scale;
+    view.tx = mw < W ? (W - mw) / 2 : Math.min(Math.max(view.tx, W - mw), 0);
+    view.ty = mh < H ? (H - mh) / 2 : Math.min(Math.max(view.ty, H - mh), 0);
+  }
+  function zoomAt(factor, sx, sy) {
+    var before = screenToWorld(sx, sy);
+    view.scale *= factor;
+    clamp();
+    var after = worldToScreen(before[0], before[1]);
+    view.tx += sx - after[0]; view.ty += sy - after[1];
+    clamp();
+    requestDraw();
+  }
+
+  // ---------- route ----------
+  function hwyPointAtY(y) {
+    for (var i = 0; i < HWY.length - 1; i++) {
+      var a = HWY[i], b = HWY[i + 1];
+      if (y >= a[1] && y <= b[1]) { var t = (y - a[1]) / (b[1] - a[1]); return [a[0] + (b[0] - a[0]) * t, y]; }
+    }
+    return HWY[HWY.length - 1];
+  }
+  function routeTo(job) {
+    var pts = [[PLAYER.x, PLAYER.y]];
+    var p0 = hwyPointAtY(PLAYER.y), p1 = hwyPointAtY(job.y);
+    pts.push(p0);
+    var lo = Math.min(PLAYER.y, job.y), hi = Math.max(PLAYER.y, job.y);
+    var mids = HWY.filter(function (p) { return p[1] > lo && p[1] < hi; });
+    if (job.y < PLAYER.y) mids.reverse();
+    pts = pts.concat(mids);
+    pts.push(p1);
+    pts.push([job.x, job.y]);
+    var km = 0;
+    for (var i = 1; i < pts.length; i++) km += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]) * KM_PER_UNIT;
+    return { pts: pts, km: km };
+  }
+  function distanceKm(job) { return routeTo(job).km; }
+
+  // ---------- drawing ----------
+  function poly(pts, close) {
+    ctx.beginPath();
+    pts.forEach(function (p, i) { var q = worldToScreen(p[0], p[1]); if (i) ctx.lineTo(q[0], q[1]); else ctx.moveTo(q[0], q[1]); });
+    if (close) ctx.closePath();
+  }
+  function drawMap() {
+    var s = view.scale;
+    ctx.clearRect(0, 0, W, H);
+    // land
+    ctx.fillStyle = '#231a3a';
+    ctx.fillRect(0, 0, W, H);
+    // urban blocks between M1 and the coast: faint street grid
+    ctx.save();
+    poly(M1.concat(COAST.slice().reverse()), true);
+    ctx.clip();
+    ctx.fillStyle = '#2a2044';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(255,242,232,' + (s > 1.4 ? 0.09 : 0.05) + ')';
+    ctx.lineWidth = 1;
+    var step = 34;
+    for (var gx = 0; gx <= 1000; gx += step) { var a = worldToScreen(gx, 0), b = worldToScreen(gx, 1000); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
+    for (var gy = 0; gy <= 1000; gy += step) { var c = worldToScreen(0, gy), d = worldToScreen(1000, gy); ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(d[0], d[1]); ctx.stroke(); }
+    ctx.restore();
+    // hinterland ridge west of M1
+    ctx.save();
+    poly([[0,0]].concat(M1, [[0,1000]]), true);
+    ctx.clip();
+    ctx.fillStyle = '#1d1533';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(34,229,211,0.06)'; ctx.lineWidth = 1;
+    for (var r = 0; r < 12; r++) { var rx = 40 + r * 24; poly([[rx, 0],[rx + 60, 300],[rx - 20, 600],[rx + 40, 1000]]); ctx.stroke(); }
+    ctx.restore();
+    // ocean
+    ctx.fillStyle = '#0f1b30';
+    poly(COAST.concat([[1000,1000],[1000,0]]), true); ctx.fill();
+    // surf line + beach
+    ctx.lineWidth = Math.max(2, 8 * s); ctx.strokeStyle = '#e9cf9a'; poly(COAST); ctx.stroke();
+    ctx.lineWidth = Math.max(1, 3 * s); ctx.strokeStyle = 'rgba(34,229,211,0.35)'; ctx.setLineDash([6, 8]); poly(COAST); ctx.stroke(); ctx.setLineDash([]);
+    // broadwater, river, canals, lakes
+    ctx.fillStyle = '#0f1b30';
+    poly(BROADWATER, true); ctx.fill();
+    ctx.strokeStyle = '#0f1b30'; ctx.lineWidth = Math.max(4, 16 * s); ctx.lineJoin = 'round'; ctx.lineCap = 'round'; poly(RIVER); ctx.stroke();
+    CANALS.concat(LAKES).forEach(function (c) { var q = worldToScreen(c[0], c[1]); ctx.fillRect(q[0], q[1], c[2] * s, c[3] * s); });
+    // roads
+    ARTERIALS.forEach(function (rd) { ctx.strokeStyle = 'rgba(255,242,232,0.42)'; ctx.lineWidth = Math.max(1.2, 2.2 * s); poly(rd); ctx.stroke(); });
+    ctx.strokeStyle = 'rgba(255,242,232,0.7)'; ctx.lineWidth = Math.max(2, 3.2 * s); poly(HWY); ctx.stroke();
+    ctx.strokeStyle = '#0b0713'; ctx.lineWidth = Math.max(4, 6 * s); poly(M1); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,209,102,0.85)'; ctx.lineWidth = Math.max(2.4, 3.6 * s); poly(M1); ctx.stroke();
+    // labels
+    ctx.font = Math.round(Math.max(10, Math.min(15, 11 * s))) + 'px ' + HUD_FONT;
+    ctx.textBaseline = 'middle';
+    LABELS.forEach(function (l) {
+      var q = worldToScreen(l[1], l[2]);
+      var water = l[0] === 'Pacific Ocean' || l[0] === 'Broadwater';
+      ctx.fillStyle = water ? 'rgba(34,229,211,0.55)' : 'rgba(255,242,232,0.62)';
+      ctx.shadowColor = '#000'; ctx.shadowBlur = 4;
+      ctx.fillText((water ? l[0] : l[0].toUpperCase()), q[0], q[1]);
+      ctx.shadowBlur = 0;
+    });
+    // route
+    if (selected && !selected.sold && enabled[selected.type]) {
+      var rt = routeTo(selected);
+      ctx.strokeStyle = 'rgba(255,45,149,0.95)'; ctx.lineWidth = 3; ctx.setLineDash([10, 8]);
+      ctx.lineDashOffset = reduced ? 0 : -(performance.now() / 40) % 18;
+      poly(rt.pts); ctx.stroke(); ctx.setLineDash([]);
+    }
+    // blips
+    var now = performance.now();
+    JOBS.forEach(function (j) {
+      if (!enabled[j.type]) return;
+      var q = worldToScreen(j.x, j.y);
+      var col = j.sold ? '#5a5566' : TYPES[j.type].color;
+      var R = j === selected ? 12 : (j === hover ? 11 : 9);
+      if (j.stars === 5 && !j.sold) {
+        var pulse = reduced ? 0.5 : (now / 1200 + j.x) % 1;
+        ctx.beginPath(); ctx.arc(q[0], q[1], R + 6 + pulse * 14, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,209,102,' + (0.7 * (1 - pulse)) + ')'; ctx.lineWidth = 2; ctx.stroke();
+      }
+      ctx.shadowColor = col; ctx.shadowBlur = j.sold ? 0 : 12;
+      ctx.beginPath(); ctx.arc(q[0], q[1], R, 0, Math.PI * 2);
+      ctx.fillStyle = col; ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.lineWidth = 2; ctx.strokeStyle = '#0b0713'; ctx.stroke();
+      ctx.fillStyle = '#0b0713'; ctx.font = 'bold ' + Math.round(R * 1.05) + 'px ' + HUD_FONT; ctx.textAlign = 'center';
+      ctx.fillText(j.sold ? '×' : TYPES[j.type].glyph, q[0], q[1] + 0.5);
+      ctx.textAlign = 'left';
+      if (j === selected) {
+        // waypoint flag
+        ctx.beginPath(); ctx.arc(q[0], q[1], R + 5, 0, Math.PI * 2); ctx.strokeStyle = '#fff2e8'; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = '#ff2d95';
+        ctx.beginPath(); ctx.moveTo(q[0], q[1] - R - 26); ctx.lineTo(q[0] + 9, q[1] - R - 16); ctx.lineTo(q[0], q[1] - R - 6); ctx.lineTo(q[0] - 9, q[1] - R - 16); ctx.closePath(); ctx.fill();
+      }
+    });
+    // player
+    var p = worldToScreen(PLAYER.x, PLAYER.y);
+    ctx.save(); ctx.translate(p[0], p[1]); ctx.rotate(-0.4);
+    ctx.fillStyle = '#fff2e8'; ctx.shadowColor = '#fff'; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.moveTo(0, -13); ctx.lineTo(10, 11); ctx.lineTo(0, 5); ctx.lineTo(-10, 11); ctx.closePath(); ctx.fill();
+    ctx.restore();
+    // scale bar
+    var km5 = 5 / KM_PER_UNIT * view.scale;
+    document.getElementById('scale-bar').style.width = Math.round(km5) + 'px';
+  }
+  var raf = null;
+  function requestDraw() { if (raf) return; raf = requestAnimationFrame(function () { raf = null; drawMap(); }); }
+  function animate() { requestDraw(); if (!reduced) requestAnimationFrame(animate); }
+
+  // ---------- rail ----------
+  function money(n) { return '$' + n.toLocaleString('en-AU'); }
+  function stars(n) { return '★★★★★'.slice(0, n) + '<span>' + '★★★★★'.slice(n) + '</span>'; }
+  function renderBrief() {
+    var j = selected, t = TYPES[j.type];
+    document.getElementById('brief-id').textContent = '#' + j.id;
+    var b = document.getElementById('brief');
+    b.style.setProperty('--c', j.sold ? '#5a5566' : t.color);
+    b.innerHTML =
+      '<div class="job-top"><div><span class="job-type">' + t.label + (j.sold ? ' · sold' : '') + '</span><h3>' + j.name + '</h3><span class="job-loc">' + j.suburb + ' · ' + j.site + '</span></div>' +
+      '<span class="stars" aria-label="Urgency ' + j.stars + ' of 5">' + stars(j.stars) + '</span></div>' +
+      '<ul class="job-spec">' + j.spec.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>' +
+      '<div class="job-money"><div><span class="money-label">Quoted value</span><div class="money">' + money(j.quote) + '</div></div><div><span class="money-label">Finder\'s fee</span><div class="money cash">' + money(j.fee) + '</div></div></div>' +
+      '<div class="brief-route"><span>' + j.by + '</span><span>Route <b>' + distanceKm(j).toFixed(1) + ' km</b> from you</span></div>' +
+      (j.sold ? '<a class="btn btn-ghost" href="#jobs"><span>Gone · sold 2 Sep</span></a>'
+              : '<div class="brief-actions"><a class="btn btn-ghost" href="#sell"><span>Ask seller</span></a><a class="btn btn-primary" href="#sell"><span>Buy job</span></a></div>');
+  }
+  function renderNearby() {
+    var list = document.getElementById('nearby');
+    var rows = JOBS.filter(function (j) { return enabled[j.type]; })
+      .map(function (j) { return { j: j, km: distanceKm(j) }; })
+      .sort(function (a, b) { return (a.j.sold - b.j.sold) || (a.km - b.km); });
+    list.innerHTML = rows.map(function (r) {
+      var j = r.j, t = TYPES[j.type];
+      return '<li data-id="' + j.id + '" class="' + (j.sold ? 'sold' : '') + '" aria-selected="' + (j === selected) + '" style="--c:' + t.color + '">' +
+        '<span class="blip">' + (j.sold ? '×' : t.glyph) + '</span>' +
+        '<span><b>' + j.name + '</b><small>' + j.suburb.replace(/ QLD \d+/, '') + ' · ' + r.km.toFixed(1) + ' km</small></span>' +
+        '<span class="fee">' + money(j.fee) + '<br><small>' + '★'.repeat(j.stars) + '</small></span></li>';
+    }).join('');
+    document.getElementById('map-count').textContent = rows.length + ' jobs on the map';
+  }
+  function select(j, pan) {
+    selected = j;
+    renderBrief(); renderNearby();
+    if (pan) {
+      var q = worldToScreen(j.x, j.y);
+      var margin = 90;
+      if (q[0] < margin || q[0] > W - margin || q[1] < margin || q[1] > H - margin) {
+        view.tx = W / 2 - j.x * view.scale; view.ty = H / 2 - j.y * view.scale; clamp();
+      }
+    }
+    requestDraw();
+  }
+
+  // ---------- interaction ----------
+  function jobAt(sx, sy) {
+    var best = null, bd = 16;
+    JOBS.forEach(function (j) { if (!enabled[j.type]) return; var q = worldToScreen(j.x, j.y); var d = Math.hypot(q[0] - sx, q[1] - sy); if (d < bd) { bd = d; best = j; } });
+    return best;
+  }
+  var drag = null;
+  stage.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, y: e.clientY, tx: view.tx, ty: view.ty, moved: false }; stage.setPointerCapture(e.pointerId); });
+  stage.addEventListener('pointermove', function (e) {
+    var rect = stage.getBoundingClientRect(), sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+    if (drag) {
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; stage.classList.add('dragging'); }
+      view.tx = drag.tx + dx; view.ty = drag.ty + dy; clamp(); requestDraw();
+      return;
+    }
+    var j = jobAt(sx, sy);
+    if (j !== hover) { hover = j; requestDraw(); }
+    stage.style.cursor = j ? 'pointer' : '';
+    if (j) {
+      tip.hidden = false; tip.style.left = sx + 'px'; tip.style.top = sy + 'px';
+      tip.innerHTML = j.name + ' · <b>' + money(j.fee) + '</b>' + (j.sold ? ' · sold' : '');
+    } else { tip.hidden = true; }
+  });
+  function endDrag(e) {
+    if (!drag) return;
+    var rect = stage.getBoundingClientRect();
+    if (!drag.moved) { var j = jobAt(e.clientX - rect.left, e.clientY - rect.top); if (j) select(j, false); }
+    drag = null; stage.classList.remove('dragging');
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', function () { drag = null; stage.classList.remove('dragging'); });
+  stage.addEventListener('pointerleave', function () { hover = null; tip.hidden = true; requestDraw(); });
+  stage.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var rect = stage.getBoundingClientRect();
+    zoomAt(e.deltaY < 0 ? 1.18 : 1 / 1.18, e.clientX - rect.left, e.clientY - rect.top);
+  }, { passive: false });
+  stage.addEventListener('keydown', function (e) {
+    var step = 60, handled = true;
+    if (e.key === 'ArrowLeft') view.tx += step; else if (e.key === 'ArrowRight') view.tx -= step;
+    else if (e.key === 'ArrowUp') view.ty += step; else if (e.key === 'ArrowDown') view.ty -= step;
+    else if (e.key === '+' || e.key === '=') zoomAt(1.25, W / 2, H / 2);
+    else if (e.key === '-') zoomAt(0.8, W / 2, H / 2);
+    else if (e.key === 'Tab' && !e.shiftKey && false) {}
+    else handled = false;
+    if (handled) { e.preventDefault(); clamp(); requestDraw(); }
+  });
+  document.getElementById('zoom-in').addEventListener('click', function () { zoomAt(1.3, W / 2, H / 2); });
+  document.getElementById('zoom-out').addEventListener('click', function () { zoomAt(1 / 1.3, W / 2, H / 2); });
+  document.getElementById('zoom-reset').addEventListener('click', function () { resetView(); requestDraw(); });
+  document.getElementById('nearby').addEventListener('click', function (e) {
+    var li = e.target.closest('li[data-id]'); if (!li) return;
+    var j = JOBS.filter(function (x) { return x.id === li.getAttribute('data-id'); })[0];
+    if (j) select(j, true);
+  });
+  document.getElementById('map-filters').addEventListener('click', function (e) {
+    var chip = e.target.closest('.chip'); if (!chip) return;
+    var t = chip.getAttribute('data-type');
+    enabled[t] = !enabled[t];
+    chip.setAttribute('aria-pressed', String(enabled[t]));
+    if (!enabled[selected.type]) { var first = JOBS.filter(function (j) { return enabled[j.type] && !j.sold; })[0]; if (first) selected = first; }
+    renderBrief(); renderNearby(); requestDraw();
+  });
+
+  function resize() {
+    W = stage.clientWidth; H = stage.clientHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    clamp(); requestDraw();
+  }
+  resetView(); resize();
+  renderBrief(); renderNearby();
+  window.addEventListener('resize', function () { resize(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestDraw);
+  animate();
 })();
 </script>
 </body>
