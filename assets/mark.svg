@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 320" role="img" aria-label="#airconlife mark">
+  <defs>
+    <linearGradient id="am-fire" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa62e"/><stop offset="0.45" stop-color="#ff6a3d"/><stop offset="1" stop-color="#ff2d95"/></linearGradient>
+    <linearGradient id="am-teal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3ff2e0"/><stop offset="1" stop-color="#17b8ad"/></linearGradient>
+  </defs>
+  <g transform="translate(70 30) skewX(-12)">
+    <g fill="#1a0b2e" stroke="#1a0b2e" stroke-width="30" stroke-linejoin="round">
+      <rect x="60.0" y="54.1" width="44.0" height="199.9" rx="12" fill="#1a0b2e" /><rect x="156.0" y="54.1" width="44.0" height="199.9" rx="12" fill="#1a0b2e" /><rect x="30.0" y="105.9" width="200.0" height="44.0" rx="12" fill="#1a0b2e" /><rect x="30.0" y="167.8" width="200.0" height="44.0" rx="12" fill="#1a0b2e" />
+    </g>
+    <rect x="60.0" y="54.1" width="44.0" height="199.9" rx="12" fill="url(#am-fire)" /><rect x="156.0" y="54.1" width="44.0" height="199.9" rx="12" fill="url(#am-fire)" /><rect x="30.0" y="105.9" width="200.0" height="44.0" rx="12" fill="url(#am-fire)" /><rect x="30.0" y="167.8" width="200.0" height="44.0" rx="12" fill="url(#am-fire)" />
+    <rect x="156.0" y="54.1" width="44.0" height="57.8" rx="12" fill="url(#am-teal)" />
+  </g>
+</svg>

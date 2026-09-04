@@ -22,6 +22,7 @@ Then visit http://localhost:8000.
 
 - Plain HTML, CSS and vanilla JS in `index.html`
 - Google Fonts: Anton (display), Barlow (body), Share Tech Mono (HUD numbers)
+- Logo: `assets/logo.svg` (wordmark) and `assets/mark.svg` (hash mark, also the favicon), rebuilt as SVG paths from Anton outlines so they need no font
 - Palms are drawn on a `<canvas>` at load and on resize
 - The job map is a canvas-drawn, stylised Gold Coast (coast, Broadwater, Nerang River, canals, M1, Gold Coast Highway, suburbs) with pan, zoom, hover, click-to-waypoint, a route from the player marker, type filters and a job brief rail. Job data lives in the `JOBS` array in the second script block.
 - The ticker loop and hero canvas are the only other scripted behaviour

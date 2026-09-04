@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>#airconlife</title>
 <meta name="description" content="The marketplace where aircon contractors sell the jobs they've quoted but can't fit in, and licensed installers buy them.">
+<link rel="icon" type="image/svg+xml" href="assets/mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap">
@@ -135,7 +136,7 @@
     display: grid; place-items: center;
     font-family: var(--display); color: var(--night); font-size: 1.2rem;
   }
-  .brand-name { font-family: var(--display); text-transform: none; letter-spacing: 0.02em; font-size: 1.2rem; }
+  .brand-logo { height: 40px; width: auto; filter: drop-shadow(0 2px 0 rgba(0,0,0,0.5)); }
   .nav-links { display: flex; gap: 1.6rem; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.06em; }
   .nav-links a { color: var(--cream-dim); transition: color 120ms; }
   .nav-links a:hover { color: var(--cream); }
@@ -241,8 +242,8 @@
     display: grid; gap: 0.85rem; align-content: start;
     overflow: auto;
   }
-  .panel .logo { font-size: clamp(2.6rem, 4.6vw, 3.5rem); line-height: 0.9; text-transform: none; letter-spacing: -0.01em; }
-  .logo .hash { -webkit-text-fill-color: var(--teal); color: var(--teal); filter: drop-shadow(0 0 14px rgba(34, 229, 211, 0.6)); }
+  .panel .logo img { width: 100%; max-width: 350px; height: auto; filter: drop-shadow(0 0 18px rgba(255, 45, 149, 0.35)); }
+  .panel .logo { margin-bottom: 0.4rem; }
   .panel .logo small { font-size: 0.34em; letter-spacing: 0.3em; margin-bottom: 0.1em; }
   .panel-sub { font-family: var(--hud); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); }
   .panel-lede { color: var(--cream-dim); font-size: 0.95rem; max-width: 42ch; line-height: 1.45; }
@@ -290,10 +291,10 @@
   .key { min-width: 30px; height: 26px; padding-inline: 0.4rem; display: grid; place-items: center; background: rgba(255, 242, 232, 0.92); color: var(--night); font-family: var(--hud); font-size: 0.7rem; border-radius: 3px; box-shadow: 0 2px 0 rgba(0,0,0,0.6); }
 
   /* bottom-left: minimap */
-  .minimap { display: block; left: max(1.25rem, calc((100% - var(--wrap)) / 2)); bottom: 1.4rem; width: 190px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255, 242, 232, 0.25); box-shadow: 0 0 0 4px rgba(12, 8, 24, 0.7), 0 20px 40px -18px #000; }
+  .minimap { display: block; left: max(1.25rem, calc((100% - var(--wrap)) / 2)); bottom: 1.4rem; width: 150px; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255, 242, 232, 0.25); box-shadow: 0 0 0 4px rgba(12, 8, 24, 0.7), 0 20px 40px -18px #000; }
   .minimap svg { width: 100%; height: 100%; }
   .minimap-tag { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); font-family: var(--hud); font-size: 0.6rem; letter-spacing: 0.16em; color: var(--cream); text-transform: uppercase; background: rgba(12, 8, 24, 0.8); padding: 0.15rem 0.5rem; white-space: nowrap; }
-  .locked { left: calc(max(1.25rem, calc((100% - var(--wrap)) / 2)) + 205px); bottom: 1.6rem; display: grid; gap: 0.4rem; }
+  .locked { left: calc(max(1.25rem, calc((100% - var(--wrap)) / 2)) + 165px); bottom: 1.6rem; display: grid; gap: 0.4rem; }
   .locked li { display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0.8rem; font-family: var(--hud); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dim); }
   .locked li b { color: var(--cream); font-weight: 400; display: block; }
   .locked li small { display: block; font-size: 0.6rem; }
@@ -310,6 +311,7 @@
   .phone-screen { width: 100%; height: 100%; border-radius: 26px; overflow: hidden; background: linear-gradient(180deg, #16102a, #0e0a1c); display: grid; gap: 0.6rem; align-content: start; padding: 0.7rem 0.75rem; position: relative; }
   .phone-screen::before { content: ""; position: absolute; left: 50%; top: 8px; transform: translateX(-50%); width: 70px; height: 20px; border-radius: 12px; background: #0a0713; }
   .ph-status { display: flex; justify-content: space-between; font-family: var(--hud); font-size: 0.62rem; color: var(--cream-dim); padding-inline: 0.3rem; }
+  .ph-brand img { height: 24px; width: auto; }
   .ph-brand { font-family: var(--display); text-transform: none; letter-spacing: 0.02em; font-size: 1.1rem; margin-top: 0.4rem; display: flex; justify-content: space-between; align-items: center; }
   .ph-brand span { color: var(--teal); }
   .ph-tabs { display: flex; gap: 0.9rem; font-family: var(--hud); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-dim); border-bottom: 1px solid rgba(255, 242, 232, 0.1); padding-bottom: 0.3rem; }
@@ -510,6 +512,7 @@
   /* ---------- footer ---------- */
   .footer { padding-block: 2.4rem; border-top: 1px solid var(--cream-faint); color: var(--cream-dim); font-size: 0.9rem; }
   .footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .foot-logo { height: 30px; width: auto; margin-bottom: 0.4rem; }
   .footer-links { display: flex; gap: 1.4rem; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; font-weight: 600; }
   .footer-links a:hover { color: var(--cream); }
 
@@ -525,8 +528,7 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="#airconlife home">
-      <span class="brand-mark">#</span>
-      <span class="brand-name">#airconlife</span>
+      <img class="brand-logo" src="assets/logo.svg" alt="#airconlife">
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#how">How it works</a>
@@ -555,7 +557,7 @@
 
   <aside class="hud-el glass panel">
     <div>
-      <h1 class="display grad logo"><span class="hash">#</span>airconlife</h1>
+      <h1 class="logo"><img src="assets/logo.svg" alt="#airconlife"></h1>
       <p class="panel-sub">Job marketplace · Gold Coast</p>
     </div>
     <p class="panel-tagline">Quoted it. Can't do it. <em>Sell it.</em></p>
@@ -620,7 +622,7 @@
   <div class="hud-el phone" aria-hidden="true">
     <div class="phone-screen">
       <div class="ph-status"><span>7:42</span><span>▲ 5G ▮</span></div>
-      <div class="ph-brand">#aircon<span>life</span> <span>≡</span></div>
+      <div class="ph-brand"><img src="assets/logo.svg" alt="#airconlife"> <span>≡</span></div>
       <div class="ph-tabs"><b>Live</b><span>Selling</span><span>Wallet</span></div>
       <div class="ph-radar">
         <div>
@@ -782,7 +784,7 @@
 
 <footer class="footer">
   <div class="wrap">
-    <span>© 2026 #airconlife · Gold Coast, Queensland<br><small>Hero photo: <a href="https://commons.wikimedia.org/wiki/File:Gold-Coast-Skyline-at-Night.jpg">Gold Coast skyline at night</a> by marty.vdh, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>, colour graded.</small></span>
+    <span><img class="foot-logo" src="assets/logo.svg" alt="#airconlife"><br>© 2026 #airconlife · Gold Coast, Queensland<br><small>Hero photo: <a href="https://commons.wikimedia.org/wiki/File:Gold-Coast-Skyline-at-Night.jpg">Gold Coast skyline at night</a> by marty.vdh, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>, colour graded.</small></span>
     <nav class="footer-links" aria-label="Footer">
       <a href="#how">How it works</a>
       <a href="#jobs">Job map</a>
