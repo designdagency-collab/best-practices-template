@@ -1,6 +1,6 @@
 # Hero image
 
-Drop a rendered hero image here as `hero.jpg` (recommended 2400 × 1350, JPEG, under 600 KB) and the page will show it behind the HUD automatically. Without it, the page draws a stylised sunset, skyline, road and palms on canvas instead.
+The hero currently uses `hero.jpg` (1920 px) and `hero-1280.jpg`: "Gold Coast skyline at night" by marty.vdh, CC BY-SA 2.0, via Wikimedia Commons, colour graded on the page with CSS. Keep the footer credit if you keep the photo. To swap it, replace both files (same names, JPEG, 16:10 or 3:2) and the page picks them up automatically. Without them, the page draws a stylised sunset, skyline, road and palms on canvas instead.
 
 The HUD is designed for a shot like this. Suggested generation prompt:
 

@@ -6,7 +6,7 @@ The design is GTA VI / Vice City inspired. The hero is composed like an open-wor
 
 ## Hero image
 
-The hero looks for `assets/hero.jpg` and shows it behind the HUD when present. Without it, the page draws a stylised sunset, skyline, road and palms on canvas. See `assets/README.md` for the recommended size and a generation prompt.
+The hero shows `assets/hero.jpg` (with `assets/hero-1280.jpg` for smaller screens) behind the HUD, colour graded with CSS. The photo is "Gold Coast skyline at night" by marty.vdh, CC BY-SA 2.0, via Wikimedia Commons, and is credited in the footer. If the files are missing the page falls back to a canvas-drawn sunset, skyline, road and palms. See `assets/README.md` for how to swap the image.
 
 ## Run it
 
