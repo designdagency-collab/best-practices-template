@@ -7,3 +7,7 @@ The HUD is designed for a shot like this. Suggested generation prompt:
 > Photorealistic wide shot in the style of a modern open-world game screenshot, golden-hour sunset over the Gold Coast, Australia. An aircon installer in a black "#airconlife" t-shirt seen from behind, walking towards a white work van with roof racks and rooftop split-system condensers on a glass showroom behind. Q1 tower and city skyline on the horizon, palm trees, wet asphalt reflecting pink and orange sky, cinematic lighting, 16:9, no text, no logos.
 
 Keep the subject centred-right so the left panel and phone do not cover the focal point.
+
+# Logo
+
+The page loads `assets/logo.png` first (the exact supplied wordmark) and falls back to `assets/logo.svg`, a vector rebuild, when the PNG is missing. To use the exact logo, save the original as `assets/logo.png` (transparent background, at least 1600 px wide). No code change is needed.
