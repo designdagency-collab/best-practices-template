@@ -6,7 +6,7 @@ The design is GTA VI / Vice City inspired. The hero is composed like an open-wor
 
 ## Hero image
 
-The hero shows `assets/hero.jpg` (with `assets/hero-1280.jpg` for smaller screens) behind the HUD, colour graded with CSS. The photo is "Gold Coast skyline at night" by marty.vdh, CC BY-SA 2.0, via Wikimedia Commons, and is credited in the footer. If the files are missing the page falls back to a canvas-drawn sunset, skyline, road and palms. See `assets/README.md` for how to swap the image.
+The hero shows `assets/hero.jpg` (with `assets/hero-1280.jpg` for smaller screens) behind the HUD: the supplied #airconlife render, lightly graded with CSS. If the files are missing the page falls back to a canvas-drawn sunset, skyline, road and palms. See `assets/README.md` for how to swap the image.
 
 ## Run it
 
@@ -23,7 +23,7 @@ Then visit http://localhost:8000.
 - Plain HTML, CSS and vanilla JS in `index.html`
 - Google Fonts: Anton (display), Barlow (body), Share Tech Mono (HUD numbers)
 - Dark neon theme by default; a moon/sun toggle in the nav switches to a light daytime theme (stored per browser). The hero and ticker stay dark in both themes because they are the "game screen".
-- Logo: `assets/logo.svg` (wordmark) and `assets/mark.svg` (hash mark, also the favicon), rebuilt as SVG paths from Anton outlines so they need no font
+- Logo: `assets/logo.png` (the supplied wordmark) with `assets/logo.svg` as a vector fallback; `assets/mark.png` is the hash mark used as the favicon
 - Palms are drawn on a `<canvas>` at load and on resize
 - The job map is a canvas-drawn, stylised Gold Coast (coast, Broadwater, Nerang River, canals, M1, Gold Coast Highway, suburbs) with pan, zoom, hover, click-to-waypoint, a route from the player marker, type filters and a job brief rail. Job data lives in the `JOBS` array in the second script block.
 - The ticker loop and hero canvas are the only other scripted behaviour

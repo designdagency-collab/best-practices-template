@@ -1,6 +1,6 @@
 # Hero image
 
-The hero currently uses `hero.jpg` (1920 px) and `hero-1280.jpg`: "Gold Coast skyline at night" by marty.vdh, CC BY-SA 2.0, via Wikimedia Commons, colour graded on the page with CSS. Keep the footer credit if you keep the photo. To swap it, replace both files (same names, JPEG, 16:10 or 3:2) and the page picks them up automatically. Without them, the page draws a stylised sunset, skyline, road and palms on canvas instead.
+The hero uses `hero.jpg` (1448 px) and `hero-1280.jpg`, both exported from the supplied #airconlife render. To swap it, replace both files (same names, JPEG, roughly 4:3 or wider) and the page picks them up automatically. Without them, the page draws a stylised sunset, skyline, road and palms on canvas instead.
 
 The HUD is designed for a shot like this. Suggested generation prompt:
 
@@ -10,4 +10,4 @@ Keep the subject centred-right so the left panel and phone do not cover the foca
 
 # Logo
 
-The page loads `assets/logo.png` first (the exact supplied wordmark) and falls back to `assets/logo.svg`, a vector rebuild, when the PNG is missing. To use the exact logo, save the original as `assets/logo.png` (transparent background, at least 1600 px wide). No code change is needed.
+The page loads `assets/logo.png` (the supplied wordmark, trimmed of its transparent margins) and falls back to `assets/logo.svg`, a vector rebuild, if the PNG is missing. `assets/mark.png` is the hash mark cropped from the same file, used as the favicon.
