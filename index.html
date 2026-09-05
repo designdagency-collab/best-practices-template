@@ -64,8 +64,8 @@
     --map-label-shadow: #000;
     --map-player: #fff2e8;
   }
-  /* Light mode is opt-in: the toggle (or the viewer) stamps data-theme="light" */
-  :root[data-theme="light"] {
+  /* Light mode is opt-in: only the page's own toggle sets data-mode="light" */
+  :root[data-mode="light"] {
     --bg: #fbf3ea;
     --bg-2: #f3e6da;
     --bg-3: #f8dfe6;
@@ -617,19 +617,19 @@
 <script>
 (function () {
   var root = document.documentElement, btn = document.getElementById('theme-btn');
-  function stored() { try { return localStorage.getItem('airconlife-theme'); } catch (e) { return null; } }
-  function effective() { return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+  function stored() { try { return localStorage.getItem('airconlife-mode'); } catch (e) { return null; } }
+  function effective() { return root.getAttribute('data-mode') === 'light' ? 'light' : 'dark'; }
   function paint() {
     var light = effective() === 'light';
     if (btn) { btn.textContent = light ? '☀' : '☾'; btn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode'); }
     window.dispatchEvent(new Event('themechange'));
   }
   var saved = stored();
-  if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+  if (saved === 'light' || saved === 'dark') root.setAttribute('data-mode', saved);
   if (btn) btn.addEventListener('click', function () {
     var next = effective() === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('airconlife-theme', next); } catch (e) {}
+    root.setAttribute('data-mode', next);
+    try { localStorage.setItem('airconlife-mode', next); } catch (e) {}
     paint();
   });
   paint();
