@@ -8,6 +8,13 @@ The design is GTA VI / Vice City inspired. The hero is composed like an open-wor
 
 The hero shows `assets/hero.jpg` (with `assets/hero-1280.jpg` for smaller screens) behind the HUD: the supplied #airconlife render, lightly graded with CSS. If the files are missing the page falls back to a canvas-drawn sunset, skyline, road and palms. See `assets/README.md` for how to swap the image.
 
+## Two designs
+
+- `index.html`: the HUD design. Game-screenshot hero with a live HUD, interactive job map, light/dark toggle.
+- `index-cinematic.html`: the trailer design. Letterboxed cinematic hero with the handover conversation as subtitles, loading-screen stat tiles, a Seller vs Buyer "choose your side" split, a mission-select job rail and a transcript section. Dark only.
+
+Both use the same assets folder.
+
 ## Run it
 
 It is a single static file with no build step. Open `index.html` in a browser, or serve the folder:

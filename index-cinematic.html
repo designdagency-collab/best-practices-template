@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#airconlife Trailer</title>
+<meta name="description" content="#airconlife: the marketplace where aircon contractors sell the jobs they've quoted but can't fit in.">
+<link rel="icon" type="image/png" href="assets/mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&display=swap">
+<style>
+  :root {
+    --black: #0b0713;
+    --ink-2: #16102a;
+    --plum: #2a0f4a;
+    --pink: #ff2d95;
+    --orange: #ff7a1a;
+    --gold: #ffd166;
+    --teal: #22e5d3;
+    --cash: #7fff6a;
+    --cream: #fff2e8;
+    --cream-dim: rgba(255, 242, 232, 0.66);
+    --cream-faint: rgba(255, 242, 232, 0.12);
+    --display: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+    --cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+    --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+    --hud: "Share Tech Mono", Menlo, Consolas, monospace;
+    --wrap: 1240px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--black); color: var(--cream); font-family: var(--body); font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  h1, h2, h3, p, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+  :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+  .wrap { width: min(var(--wrap), calc(100% - 2.5rem)); margin-inline: auto; }
+
+  /* grain + letterbox feel */
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: 0.08; mix-blend-mode: screen;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+
+  .display { font-family: var(--display); text-transform: uppercase; line-height: 0.9; letter-spacing: 0.01em; }
+  .grad { background: linear-gradient(180deg, var(--gold) 0%, var(--orange) 42%, var(--pink) 78%, #c4136b 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 4px 0 rgba(40, 5, 30, 0.9)); }
+  .label { font-family: var(--hud); font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--teal); }
+  .cond { font-family: var(--cond); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.95rem 1.7rem; font-family: var(--cond); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.12em; text-transform: uppercase; border: 2px solid transparent; transition: transform 150ms ease, box-shadow 150ms ease; }
+  .btn-primary { background: linear-gradient(180deg, var(--orange), var(--pink)); color: #fff; box-shadow: 0 8px 0 #7d0e47; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 0 #7d0e47, 0 0 30px rgba(255, 45, 149, 0.5); }
+  .btn-outline { border-color: var(--cream); color: var(--cream); background: rgba(11, 7, 19, 0.35); }
+  .btn-outline:hover { background: var(--cream); color: var(--black); }
+  .btn-teal { background: var(--teal); color: var(--black); box-shadow: 0 8px 0 #0b7a72; }
+  .btn-teal:hover { transform: translateY(-2px); }
+
+  /* ---------- top bar ---------- */
+  .top { position: absolute; inset: 0 0 auto 0; z-index: 10; padding-block: 1.2rem; }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  .top img { height: 44px; width: auto; filter: drop-shadow(0 3px 0 rgba(0,0,0,0.6)); }
+  .top nav { display: flex; gap: 2rem; font-family: var(--cond); font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.95rem; color: var(--cream-dim); }
+  .top nav a:hover { color: var(--cream); }
+  .top .btn { padding: 0.65rem 1.2rem; font-size: 0.9rem; }
+  @media (max-width: 800px) { .top nav { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 720px; height: min(92vh, 960px); overflow: hidden; background: var(--black); display: grid; align-items: end; }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+  .hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(11, 7, 19, 0.55) 0%, rgba(11, 7, 19, 0) 28%, rgba(11, 7, 19, 0.25) 48%, rgba(11, 7, 19, 0.95) 100%); }
+  .letterbox { position: absolute; left: 0; right: 0; height: 44px; background: var(--black); z-index: 2; }
+  .letterbox.t { top: 0; } .letterbox.b { bottom: 0; }
+  .hero-inner { position: relative; z-index: 3; padding-bottom: 5.5rem; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2rem; }
+  .hero h1 { font-size: clamp(3.2rem, 8vw, 8.6rem); max-width: 12ch; }
+  .hero h1 em { font-style: normal; -webkit-text-fill-color: var(--teal); color: var(--teal); filter: drop-shadow(0 4px 0 rgba(0, 60, 55, 0.9)) drop-shadow(0 0 24px rgba(34, 229, 211, 0.55)); }
+  .hero-side { display: grid; gap: 1rem; justify-items: end; text-align: right; max-width: 340px; }
+  .hero-side p { color: var(--cream); font-size: 1.05rem; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+  .hero-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: end; }
+  .badge { display: inline-flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0.8rem; border: 1px solid var(--cream-faint); background: rgba(11, 7, 19, 0.6); font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .badge i { width: 8px; height: 8px; border-radius: 50%; background: var(--cash); box-shadow: 0 0 10px var(--cash); }
+  @media (max-width: 900px) {
+    .hero { height: auto; min-height: 0; padding-top: 6rem; }
+    .hero-inner { grid-template-columns: 1fr; padding-bottom: 5rem; }
+    .hero-side { justify-items: start; text-align: left; }
+    .hero-ctas { justify-content: start; }
+  }
+
+  /* subtitles in the bottom letterbox */
+  .subs { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); z-index: 4; width: min(880px, calc(100% - 2rem)); text-align: center; font-family: var(--cond); font-weight: 600; font-size: clamp(0.95rem, 1.5vw, 1.2rem); letter-spacing: 0.02em; color: var(--cream); text-shadow: 0 2px 0 #000; min-height: 28px; }
+  .subs b { font-weight: 700; color: var(--teal); }
+  .subs b.them { color: var(--gold); }
+  .subs span { display: inline-block; animation: subin 300ms ease; }
+  @keyframes subin { from { opacity: 0; transform: translateY(4px); } }
+
+  /* ---------- ticker ---------- */
+  .ticker { background: var(--pink); color: #fff; border-block: 3px solid var(--gold); overflow: hidden; font-family: var(--hud); font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; padding-block: 0.55rem; white-space: nowrap; }
+  .ticker-track { display: inline-flex; animation: ticker 50s linear infinite; }
+  .ticker-track span { padding-inline: 1.6rem; border-right: 1px solid rgba(255,255,255,0.35); }
+  .ticker-track b { color: var(--black); font-weight: 400; background: var(--gold); padding: 0.05rem 0.4rem; margin-right: 0.5rem; }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+
+  .section { padding-block: 6rem; }
+  .head { display: grid; gap: 0.7rem; margin-bottom: 2.6rem; max-width: 760px; }
+  .head h2 { font-size: clamp(2.6rem, 6.4vw, 5rem); }
+  .head p { color: var(--cream-dim); font-size: 1.12rem; max-width: 58ch; }
+
+  /* ---------- loading-screen tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 4px solid var(--black); box-shadow: 0 0 0 1px var(--cream-faint); }
+  .tile { padding: 2rem 1.6rem 1.6rem; display: grid; gap: 0.3rem; align-content: end; min-height: 260px; position: relative; overflow: hidden; }
+  .tile::after { content: ""; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,255,255,0.14); }
+  .tile .n { font-family: var(--display); font-size: clamp(3rem, 6vw, 5.4rem); line-height: 0.9; letter-spacing: -0.01em; }
+  .tile .t { font-family: var(--cond); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700; font-size: 1rem; }
+  .tile .d { font-size: 0.95rem; opacity: 0.85; }
+  .tile.teal { background: var(--teal); color: var(--black); }
+  .tile.pink { background: var(--pink); color: #fff; }
+  .tile.gold { background: var(--gold); color: var(--black); }
+  .tile.orange { background: var(--orange); color: var(--black); }
+  @media (max-width: 900px) { .tiles { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .tiles { grid-template-columns: 1fr; } }
+
+  /* ---------- choose your character ---------- */
+  .chars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .char { position: relative; padding: 2.2rem 2rem 2rem; background: var(--ink-2); border: 1px solid var(--cream-faint); display: grid; gap: 1.2rem; align-content: start; overflow: hidden; transition: transform 200ms ease, border-color 200ms ease; }
+  .char:hover { transform: translateY(-4px); border-color: var(--c); }
+  .char::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 8px; background: var(--c); }
+  .char h3 { font-family: var(--display); text-transform: uppercase; font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 0.95; color: var(--c); }
+  .char .who { font-family: var(--hud); font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream-dim); }
+  .char p { color: var(--cream-dim); }
+  .perks { display: grid; gap: 0.6rem; }
+  .perks li { display: grid; grid-template-columns: auto 1fr; gap: 0.7rem; align-items: start; font-size: 0.98rem; }
+  .perks li::before { content: "▶"; color: var(--c); font-size: 0.7rem; margin-top: 0.35rem; }
+  .char-foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 0.4rem; }
+  .char .stat { font-family: var(--hud); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream-dim); }
+  .char .stat b { color: var(--c); font-weight: 400; }
+  @media (max-width: 860px) { .chars { grid-template-columns: 1fr; } }
+
+  /* ---------- mission select rail ---------- */
+  .rail-head { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .rail-head .head { margin-bottom: 0; }
+  .rail-nav { display: flex; gap: 0.5rem; }
+  .rail-nav button { width: 44px; height: 44px; background: transparent; border: 1px solid var(--cream-faint); color: var(--cream); font-size: 1.2rem; cursor: pointer; }
+  .rail-nav button:hover { border-color: var(--teal); color: var(--teal); }
+  .rail { display: flex; gap: 1.2rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem; scrollbar-width: thin; scrollbar-color: var(--pink) transparent; }
+  .mission { flex: 0 0 min(340px, 84vw); scroll-snap-align: start; background: var(--ink-2); border: 1px solid var(--cream-faint); display: grid; grid-template-rows: auto 1fr auto; overflow: hidden; }
+  .mission.sold { opacity: 0.5; }
+  .mission-top { padding: 1rem 1.2rem; background: var(--c); color: var(--black); display: flex; justify-content: space-between; align-items: center; font-family: var(--cond); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.9rem; }
+  .mission-top .stars { font-family: var(--hud); letter-spacing: 0.05em; }
+  .mission-body { padding: 1.3rem 1.2rem; display: grid; gap: 0.7rem; align-content: start; }
+  .mission h3 { font-family: var(--display); text-transform: uppercase; font-size: 1.7rem; line-height: 1; }
+  .mission .loc { color: var(--cream-dim); font-size: 0.95rem; }
+  .mission .spec { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .mission .spec li { font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.08em; padding: 0.22rem 0.5rem; border: 1px solid var(--cream-faint); color: var(--cream-dim); }
+  .mission-foot { padding: 1rem 1.2rem 1.2rem; border-top: 1px dashed var(--cream-faint); display: grid; grid-template-columns: 1fr auto; gap: 0.8rem; align-items: center; }
+  .reward { display: grid; }
+  .reward small { font-family: var(--hud); font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); }
+  .reward b { font-family: var(--hud); font-size: 1.4rem; color: var(--cash); font-weight: 400; text-shadow: 0 0 12px rgba(127, 255, 106, 0.45); }
+  .reward i { font-style: normal; font-family: var(--hud); font-size: 0.7rem; color: var(--cream-dim); }
+  .mission .btn { padding: 0.6rem 1rem; font-size: 0.85rem; }
+
+  /* ---------- handover timeline ---------- */
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
+  .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 30px; height: 2px; background: linear-gradient(90deg, var(--teal), var(--pink)); }
+  .tstep { padding: 0 1.4rem 0 0; display: grid; gap: 0.8rem; align-content: start; position: relative; }
+  .tstep .dot { width: 60px; height: 60px; border-radius: 50%; background: var(--black); border: 2px solid var(--cream); display: grid; place-items: center; font-family: var(--display); font-size: 1.6rem; position: relative; z-index: 1; }
+  .tstep h3 { font-family: var(--display); text-transform: uppercase; font-size: 1.6rem; letter-spacing: 0.03em; margin-top: 0.4rem; }
+  .tstep p { color: var(--cream-dim); }
+  .tstep .who { font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  @media (max-width: 860px) { .timeline { grid-template-columns: 1fr; gap: 2rem; } .timeline::before { display: none; } }
+
+  /* ---------- radio: the conversation ---------- */
+  .radio { background: linear-gradient(180deg, var(--black), var(--plum)); border-block: 1px solid var(--cream-faint); }
+  .radio .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .transcript { display: grid; gap: 0.8rem; }
+  .line { display: grid; grid-template-columns: 110px 1fr; gap: 1rem; align-items: baseline; padding: 0.7rem 0; border-bottom: 1px solid var(--cream-faint); }
+  .line .who { font-family: var(--hud); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+  .line.me .who { color: var(--teal); }
+  .line p { font-family: var(--cond); font-weight: 500; font-size: 1.25rem; line-height: 1.3; }
+  .line.sys { grid-template-columns: 1fr; text-align: center; border: 0; padding-top: 1.2rem; }
+  .line.sys p { font-family: var(--hud); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream-dim); }
+  .line.sys b { color: var(--cash); font-weight: 400; }
+  @media (max-width: 860px) { .radio .wrap { grid-template-columns: 1fr; } .line { grid-template-columns: 1fr; gap: 0.2rem; } }
+
+  /* ---------- mission passed ---------- */
+  .passed { text-align: center; position: relative; overflow: hidden; background: radial-gradient(ellipse at 50% 120%, rgba(255, 122, 26, 0.35), transparent 60%), var(--black); }
+  .passed .wrap { display: grid; justify-items: center; gap: 1.2rem; }
+  .passed h2 { font-size: clamp(3.4rem, 11vw, 9rem); }
+  .passed .sub { font-family: var(--hud); letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); font-size: 0.95rem; }
+  .passed p { color: var(--cream-dim); max-width: 52ch; font-size: 1.12rem; }
+  .passed .row { display: flex; gap: 0.9rem; flex-wrap: wrap; justify-content: center; }
+
+  .footer { padding-block: 2.4rem; border-top: 1px solid var(--cream-faint); color: var(--cream-dim); font-size: 0.9rem; }
+  .footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .footer img { height: 30px; width: auto; }
+  .footer nav { display: flex; gap: 1.4rem; flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; font-family: var(--cond); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } .subs span { animation: none; } .btn, .char { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" aria-label="#airconlife home"><img src="assets/logo.png" alt="#airconlife"></a>
+    <nav aria-label="Primary">
+      <a href="#characters">Choose your side</a>
+      <a href="#missions">Missions</a>
+      <a href="#handover">Handover</a>
+    </nav>
+    <a class="btn btn-primary" href="#characters">Sell a job</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <img class="hero-img" src="assets/hero.jpg" srcset="assets/hero-1280.jpg 1280w, assets/hero.jpg 1448w" sizes="100vw" alt="An #airconlife installer at a depot at sunset, vans and pallets of split systems behind him, the city skyline beyond.">
+  <div class="letterbox t" aria-hidden="true"></div>
+  <div class="letterbox b" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <h1 class="display grad">Quoted it. Can't do it. <em>Sell it.</em></h1>
+    <div class="hero-side">
+      <span class="badge"><i></i>Gold Coast · 214 jobs live</span>
+      <p>The marketplace where aircon contractors offload the installs they've quoted but can't fit in, and licensed installers pick them up.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#characters">Sell a job</a>
+        <a class="btn btn-outline" href="#missions">Browse missions</a>
+      </div>
+    </div>
+  </div>
+  <div class="subs" id="subs" aria-live="polite"></div>
+</section>
+
+<div class="ticker" aria-label="Recent activity">
+  <div class="ticker-track" id="ticker">
+    <span><b>Sold</b> Ducted 14kW · Robina · $1,180 finder's fee</span>
+    <span><b>Sold</b> Split 7.1kW · Surfers Paradise · $245</span>
+    <span><b>New</b> Multi-head ×3 · Broadbeach · $690</span>
+    <span><b>Sold</b> Cassette ×4 · Southport · $940</span>
+    <span><b>New</b> Regas R32 · Burleigh Heads · $60</span>
+    <span><b>Sold</b> Condenser swap 5kW · Mermaid Waters · $195</span>
+    <span><b>New</b> Ducted 18kW · Helensvale · $1,540</span>
+    <span><b>Sold</b> Split 2.5kW · Coolangatta · $110</span>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="tiles">
+      <div class="tile teal"><span class="n">214</span><span class="t">Jobs live now</span><span class="d">Quoted, won and waiting for an installer.</span></div>
+      <div class="tile pink"><span class="n">$1.28M</span><span class="t">Traded this month</span><span class="d">Quoted value that changed hands on the Gold Coast.</span></div>
+      <div class="tile gold"><span class="n">24 hrs</span><span class="t">To payout</span><span class="d">From confirmed handover to money in your account.</span></div>
+      <div class="tile orange"><span class="n">4.9★</span><span class="t">Average rating</span><span class="d">Buyers and sellers rate each other after every job.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="characters">
+  <div class="wrap">
+    <div class="head">
+      <span class="label">Choose your side</span>
+      <h2 class="display grad">Two ways to play.</h2>
+      <p>Whether your calendar is overflowing or you've got gaps to fill, there's a seat for you. Most tradies end up doing both.</p>
+    </div>
+    <div class="chars">
+      <article class="char" style="--c: var(--gold)">
+        <span class="who">Seller · fully booked</span>
+        <h3>The Closer</h3>
+        <p>You win more quotes than you can install. Instead of ringing customers to bail, you sell the job and pocket a finder's fee.</p>
+        <ul class="perks">
+          <li>List a job in under five minutes from the quote you already wrote</li>
+          <li>Set your own fee. Most sellers ask 10% of the quoted value</li>
+          <li>Hand over with our template so the customer never feels dropped</li>
+          <li>Paid within 24 hours of the customer confirming</li>
+        </ul>
+        <div class="char-foot">
+          <span class="stat">Avg fee earned <b>$412</b> per job</span>
+          <a class="btn btn-primary" href="#top">Start selling</a>
+        </div>
+      </article>
+      <article class="char" style="--c: var(--teal)">
+        <span class="who">Buyer · gaps in the week</span>
+        <h3>The Installer</h3>
+        <p>You've got the licence, the van and a Thursday with nothing on. Buy a job that's already quoted and won, and turn up.</p>
+        <ul class="perks">
+          <li>Every listing is a real customer with a signed-off quote</li>
+          <li>Filter by suburb, system type and install date</li>
+          <li>ARCtick licence and ABN checked before you see an address</li>
+          <li>Fee held in escrow until the handover is confirmed</li>
+        </ul>
+        <div class="char-foot">
+          <span class="stat">Avg job value <b>$5,900</b></span>
+          <a class="btn btn-teal" href="#missions">Find a job</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="missions">
+  <div class="wrap">
+    <div class="rail-head">
+      <div class="head">
+        <span class="label">Mission select · Gold Coast</span>
+        <h2 class="display grad">Pick a job. Start the mission.</h2>
+        <p>Stars show how soon the customer needs it done. Reward is the finder's fee the seller is asking.</p>
+      </div>
+      <div class="rail-nav"><button type="button" id="rail-prev" aria-label="Previous jobs">‹</button><button type="button" id="rail-next" aria-label="Next jobs">›</button></div>
+    </div>
+    <div class="rail" id="rail" tabindex="0" aria-label="Jobs on the market">
+      <article class="mission" style="--c: var(--gold)">
+        <div class="mission-top"><span>Ducted install</span><span class="stars">★★★★★</span></div>
+        <div class="mission-body"><h3>14kW ducted, 6 zones</h3><span class="loc">Robina QLD 4226 · New build · install by 12 Sep</span>
+          <ul class="spec"><li>Daikin FDYAN140</li><li>6 zones</li><li>Power at site</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$1,180</b><i>on an $11,800 job</i></div><a class="btn btn-primary" href="#top">Start</a></div>
+      </article>
+      <article class="mission" style="--c: var(--pink)">
+        <div class="mission-top"><span>Commercial</span><span class="stars">★★★★★</span></div>
+        <div class="mission-body"><h3>4 × cassette units, café</h3><span class="loc">Southport QLD 4215 · Shop fit-out · install by 10 Sep</span>
+          <ul class="spec"><li>Panasonic 4-way</li><li>3-phase</li><li>After hours</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$940</b><i>on a $9,400 job</i></div><a class="btn btn-primary" href="#top">Start</a></div>
+      </article>
+      <article class="mission" style="--c: var(--teal)">
+        <div class="mission-top"><span>Multi-head</span><span class="stars">★★★★☆</span></div>
+        <div class="mission-body"><h3>3-head multi, 1 outdoor</h3><span class="loc">Broadbeach QLD 4218 · Unit, level 9 · install by 19 Sep</span>
+          <ul class="spec"><li>Fujitsu AOTG24</li><li>3 × 2.5kW heads</li><li>No crane</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$690</b><i>on a $6,900 job</i></div><a class="btn btn-primary" href="#top">Start</a></div>
+      </article>
+      <article class="mission" style="--c: var(--gold)">
+        <div class="mission-top"><span>Ducted install</span><span class="stars">★★★★☆</span></div>
+        <div class="mission-body"><h3>18kW ducted, 8 zones</h3><span class="loc">Helensvale QLD 4212 · Two-storey · install by 24 Sep</span>
+          <ul class="spec"><li>Actron ESP Platinum</li><li>8 zones</li><li>Tight roof</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$1,540</b><i>on a $15,400 job</i></div><a class="btn btn-primary" href="#top">Start</a></div>
+      </article>
+      <article class="mission" style="--c: var(--teal)">
+        <div class="mission-top"><span>Split system</span><span class="stars">★★★☆☆</span></div>
+        <div class="mission-body"><h3>7.1kW hi-wall, back-to-back</h3><span class="loc">Surfers Paradise QLD 4217 · Apartment · install by 26 Sep</span>
+          <ul class="spec"><li>Mitsubishi MSZ-AP71</li><li>Body corp approved</li><li>Unit supplied</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$245</b><i>on a $2,450 job</i></div><a class="btn btn-primary" href="#top">Start</a></div>
+      </article>
+      <article class="mission" style="--c: var(--orange)">
+        <div class="mission-top"><span>Service</span><span class="stars">★★☆☆☆</span></div>
+        <div class="mission-body"><h3>Regas R32 &amp; leak test</h3><span class="loc">Burleigh Heads QLD 4220 · House · any time in Sep</span>
+          <ul class="spec"><li>5kW split</li><li>R32</li><li>Suspected flare leak</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$60</b><i>on a $420 job</i></div><a class="btn btn-primary" href="#top">Start</a></div>
+      </article>
+      <article class="mission sold" style="--c: #6b6478">
+        <div class="mission-top"><span>Replacement</span><span>Sold</span></div>
+        <div class="mission-body"><h3>Condenser swap, 5kW</h3><span class="loc">Mermaid Waters QLD 4218 · House · sold 2 Sep</span>
+          <ul class="spec"><li>Like-for-like</li><li>Existing pipework</li></ul></div>
+        <div class="mission-foot"><div class="reward"><small>Reward</small><b>$195</b><i>gone</i></div><a class="btn btn-outline" href="#missions">Gone</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section radio">
+  <div class="wrap">
+    <div class="head">
+      <span class="label">Radio chatter · how a handover sounds</span>
+      <h2 class="display grad">Nobody gets dropped.</h2>
+      <p>The customer already trusts the tradie who quoted them. A handover keeps that trust, and the job stays in the family.</p>
+    </div>
+    <div class="transcript">
+      <div class="line"><span class="who">Sarah · Robina</span><p>Hi mate, still on for the ducted install on the 12th?</p></div>
+      <div class="line me"><span class="who">You</span><p>Sorry Sarah, we're fully booked that week.</p></div>
+      <div class="line me"><span class="who">You</span><p>But I know a reputable company in the area and can pass your details on. They come highly recommended.</p></div>
+      <div class="line"><span class="who">Sarah · Robina</span><p>Yes please. Same quote?</p></div>
+      <div class="line me"><span class="who">You</span><p>Same quote, same date. They'll call you today.</p></div>
+      <div class="line sys"><p>Job handed over · Coastal Air 4.9★ · <b>+$1,180 fee</b></p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="handover">
+  <div class="wrap">
+    <div class="head">
+      <span class="label">The handover</span>
+      <h2 class="display grad">Three steps. One payday.</h2>
+    </div>
+    <div class="timeline">
+      <div class="tstep"><span class="dot">1</span><span class="who">Seller</span><h3>List the job</h3><p>Upload the quote, site photos and the install date the customer expects. Set your finder's fee.</p></div>
+      <div class="tstep"><span class="dot">2</span><span class="who">Buyer</span><h3>A licensed installer buys it</h3><p>Only ARCtick licence holders with a verified ABN see customer details. The fee sits in escrow.</p></div>
+      <div class="tstep"><span class="dot">3</span><span class="who">Both</span><h3>Hand over, get paid</h3><p>Introduce the installer with our template. When the customer confirms, the fee lands within 24 hours.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section passed">
+  <div class="wrap">
+    <span class="sub">Mission passed</span>
+    <h2 class="display grad">Job sold</h2>
+    <p>Stop letting quoted jobs die in your inbox. List your first one in under five minutes. It's free to list until it sells.</p>
+    <div class="row">
+      <a class="btn btn-primary" href="#top">Create a seller account</a>
+      <a class="btn btn-outline" href="#top">Sign up as an installer</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <span><img src="assets/logo.png" alt="#airconlife"><br>© 2026 #airconlife · Gold Coast, Queensland</span>
+    <nav aria-label="Footer"><a href="#characters">Choose your side</a><a href="#missions">Missions</a><a href="#handover">Handover</a><a href="#top">Terms</a><a href="#top">Privacy</a></nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var t = document.getElementById('ticker'); if (t) t.innerHTML += t.innerHTML;
+
+  // Subtitles: the handover conversation plays in the letterbox.
+  var lines = [
+    ['them', 'Sarah', "Hi mate, still on for the ducted install on the 12th?"],
+    ['me', 'You', "Sorry Sarah, we're fully booked that week."],
+    ['me', 'You', "But I know a reputable company in the area and can pass your details on. They come highly recommended."],
+    ['them', 'Sarah', "Yes please. Same quote?"],
+    ['me', 'You', "Same quote, same date. They'll call you today."]
+  ];
+  var subs = document.getElementById('subs'), i = 0;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show() {
+    var l = lines[i];
+    subs.innerHTML = '<span><b class="' + l[0] + '">' + l[1] + ':</b> ' + l[2] + '</span>';
+    i = (i + 1) % lines.length;
+  }
+  show();
+  if (!reduced) setInterval(show, 3800);
+
+  // Mission rail arrows.
+  var rail = document.getElementById('rail');
+  document.getElementById('rail-prev').addEventListener('click', function () { rail.scrollBy({ left: -360, behavior: 'smooth' }); });
+  document.getElementById('rail-next').addEventListener('click', function () { rail.scrollBy({ left: 360, behavior: 'smooth' }); });
+})();
+</script>
+</body>
+</html>
